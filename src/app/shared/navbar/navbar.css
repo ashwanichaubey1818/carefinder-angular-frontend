@@ -1,0 +1,577 @@
+:host {
+  display: block;
+}
+
+/* ==============================
+   NAVBAR CONTAINER
+================================ */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  border-bottom: 1px solid rgba(211, 227, 232, 0.9);
+
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(16px);
+
+  box-shadow: 0 3px 18px rgba(24, 62, 80, 0.04);
+}
+
+.navbar {
+  max-width: 1240px;
+  height: 76px;
+
+  margin: auto;
+  padding: 0 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 24px;
+}
+
+
+/* ==============================
+   LOGO
+================================ */
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  color: #17384b;
+  text-decoration: none;
+
+  font-size: 19px;
+  font-weight: 800;
+  line-height: 1.05;
+
+  letter-spacing: -0.02em;
+}
+
+.logo-icon {
+  position: relative;
+
+  width: 40px;
+  height: 40px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 12px;
+
+  background: linear-gradient(
+    135deg,
+    #077b82,
+    #0bad98
+  );
+
+  box-shadow: 0 9px 21px rgba(8, 126, 130, 0.22);
+}
+
+/* Medical plus icon */
+
+.logo-icon i,
+.logo-icon b {
+  position: absolute;
+
+  display: block;
+
+  border-radius: 2px;
+  background: white;
+}
+
+.logo-icon i {
+  width: 19px;
+  height: 5px;
+}
+
+.logo-icon b {
+  width: 5px;
+  height: 19px;
+}
+
+.logo-text {
+  display: grid;
+}
+
+.logo-text > span {
+  display: block;
+}
+
+.logo strong {
+  color: #078187;
+}
+
+.logo small {
+  margin-top: 4px;
+
+  color: #91a0a8;
+
+  font-size: 8px;
+  font-weight: 750;
+
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+
+/* ==============================
+   NAVIGATION LINKS
+================================ */
+
+.nav-links {
+  display: flex;
+  align-items: center;
+
+  gap: 25px;
+}
+
+.nav-links > a {
+  position: relative;
+
+  padding: 28px 0 25px;
+
+  color: #536b79;
+  text-decoration: none;
+
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.nav-links > a::after {
+  content: "";
+
+  position: absolute;
+  left: 50%;
+  right: 50%;
+  bottom: 0;
+
+  height: 3px;
+
+  border-radius: 3px 3px 0 0;
+
+  background: #099293;
+
+  transition: 0.2s;
+}
+
+.nav-links > a:hover,
+.nav-links > a.active {
+  color: #087e82;
+}
+
+.nav-links > a.active::after {
+  left: 0;
+  right: 0;
+}
+
+
+/* ==============================
+   DESKTOP ACTIONS
+================================ */
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+}
+
+
+/* ==============================
+   LOGIN BUTTON
+================================ */
+
+.login-button {
+  padding: 10px 14px;
+
+  border-radius: 10px;
+
+  color: #087f83;
+  text-decoration: none;
+
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.login-button:hover {
+  background: #edf8f6;
+}
+
+
+/* ==============================
+   REGISTER BUTTON
+================================ */
+
+.register-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 10px 14px;
+
+  border-radius: 10px;
+
+  background: linear-gradient(
+    135deg,
+    #087e82,
+    #0aa395
+  );
+
+  color: white;
+  text-decoration: none;
+
+  font-size: 12px;
+  font-weight: 800;
+
+  box-shadow: 0 9px 20px rgba(8, 126, 130, 0.18);
+}
+
+
+/* ==============================
+   PROFILE BUTTON
+================================ */
+
+.profile-button {
+  max-width: 185px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  padding: 7px 9px;
+
+  border: 1px solid #dbe8eb;
+  border-radius: 12px;
+
+  background: #f8fbfb;
+
+  color: #17384b;
+  text-decoration: none;
+
+  transition: 0.2s;
+}
+
+.profile-button:hover,
+.profile-button.active-profile {
+  border-color: #a8d9d5;
+  background: #eef9f7;
+}
+
+.profile-avatar {
+  width: 34px;
+  height: 34px;
+
+  flex: 0 0 34px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 10px;
+
+  background: linear-gradient(
+    135deg,
+    #087e82,
+    #14ae98
+  );
+
+  color: white;
+
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.profile-copy {
+  min-width: 0;
+
+  display: grid;
+
+  line-height: 1.2;
+}
+
+.profile-copy strong {
+  overflow: hidden;
+
+  font-size: 11px;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.profile-copy small {
+  margin-top: 3px;
+
+  color: #84959e;
+
+  font-size: 9px;
+}
+
+.profile-button b {
+  margin-left: auto;
+
+  color: #0a8f8e;
+}
+
+
+/* ==============================
+   LOGOUT BUTTON
+================================ */
+
+.logout-button {
+  height: 43px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 0 14px;
+
+  border: 1px solid #f0c7cf;
+  border-radius: 10px;
+
+  background: #fff4f6;
+  color: #b4233f;
+
+  font-size: 11px;
+  font-weight: 850;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.logout-button:hover {
+  border-color: #d94864;
+
+  background: #c92f4f;
+  color: white;
+}
+
+.logout-button svg {
+  width: 16px;
+  height: 16px;
+
+  fill: none;
+  stroke: currentColor;
+
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+
+/* ==============================
+   MOBILE MENU BUTTON
+================================ */
+
+.menu-button,
+.mobile-auth {
+  display: none;
+}
+
+.menu-button {
+  width: 42px;
+  height: 42px;
+
+  padding: 10px;
+
+  border: 1px solid #d7e5e9;
+  border-radius: 11px;
+
+  background: white;
+
+  cursor: pointer;
+}
+
+.menu-button span {
+  display: block;
+
+  height: 2px;
+
+  margin: 4px 0;
+
+  border-radius: 2px;
+
+  background: #275063;
+}
+
+
+/* ==============================
+   MOBILE AUTH
+================================ */
+
+.mobile-auth {
+  padding-top: 10px;
+
+  border-top: 1px solid #e8eff1;
+}
+
+.mobile-profile {
+  display: flex !important;
+  align-items: center;
+
+  gap: 10px !important;
+}
+
+.mobile-profile > span {
+  width: 37px;
+  height: 37px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 10px;
+
+  background: #087f83;
+  color: white;
+
+  font-weight: 850;
+}
+
+.mobile-profile > div {
+  display: grid;
+}
+
+.mobile-profile small {
+  color: #82949d;
+  font-size: 10px;
+}
+
+.mobile-auth button,
+.mobile-create {
+  padding: 11px !important;
+
+  border: 0;
+  border-radius: 9px;
+
+  background: #087f83 !important;
+  color: white !important;
+
+  text-align: center;
+  text-decoration: none;
+
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+
+/* ==============================
+   TABLET AND MOBILE
+================================ */
+
+@media (max-width: 960px) {
+
+  .navbar {
+    height: 70px;
+  }
+
+  .menu-button {
+    display: block;
+    order: 3;
+  }
+
+  .nav-actions {
+    margin-left: auto;
+  }
+
+  /* Desktop profile and logout hidden */
+
+  .nav-actions .profile-button,
+  .nav-actions .logout-button {
+    display: none;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 69px;
+    left: 16px;
+    right: 16px;
+
+    display: none;
+    align-items: stretch;
+    flex-direction: column;
+
+    gap: 2px;
+
+    padding: 12px;
+
+    border: 1px solid #dce8eb;
+    border-radius: 16px;
+
+    background: white;
+
+    box-shadow: 0 24px 60px rgba(18, 54, 71, 0.16);
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .nav-links > a {
+    padding: 12px;
+
+    border-radius: 9px;
+  }
+
+  .nav-links > a:hover,
+  .nav-links > a.active {
+    background: #edf8f6;
+  }
+
+  .nav-links > a::after {
+    display: none;
+  }
+
+  .mobile-auth {
+    display: grid;
+    gap: 7px;
+  }
+
+  .mobile-auth > a,
+  .mobile-auth button {
+    font-size: 12px;
+    text-decoration: none;
+  }
+}
+
+
+/* ==============================
+   SMALL MOBILE
+================================ */
+
+@media (max-width: 560px) {
+
+  .navbar {
+    padding: 0 14px;
+  }
+
+  .logo {
+    font-size: 16px;
+  }
+
+  .logo-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .logo small {
+    display: none;
+  }
+
+  .nav-actions {
+    display: none;
+  }
+
+  .menu-button {
+    margin-left: auto;
+  }
+}

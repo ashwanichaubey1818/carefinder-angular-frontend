@@ -1,0 +1,538 @@
+<main class="favorites-page">
+
+  <!-- =====================================
+       SUCCESS NOTIFICATION
+  ====================================== -->
+
+  @if (successMessage()) {
+    <div
+      class="favorites-notification success"
+      role="status"
+    >
+      <span aria-hidden="true">
+        ✓
+      </span>
+
+      {{ successMessage() }}
+    </div>
+  }
+
+
+  <!-- =====================================
+       HERO
+  ====================================== -->
+
+  <section class="favorites-hero">
+    <div class="hero-content">
+      <nav
+        class="breadcrumb"
+        aria-label="Breadcrumb"
+      >
+        <a routerLink="/">
+          Home
+        </a>
+
+        <span aria-hidden="true">
+          /
+        </span>
+
+        <span>
+          Saved hospitals
+        </span>
+      </nav>
+
+      <span class="eyebrow">
+        Your healthcare shortlist
+      </span>
+
+      <h1>
+        Saved Hospitals
+      </h1>
+
+      <p>
+        Keep your preferred hospitals together
+        and access their details whenever you
+        need them.
+      </p>
+    </div>
+
+
+    <!-- SAVED COUNTER -->
+
+    <div class="saved-counter">
+      <div class="heart-icon">
+        <svg
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path
+            d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"
+          />
+        </svg>
+      </div>
+
+      <div>
+        <strong>
+          {{ favoriteHospitals().length }}
+        </strong>
+
+        <span>
+          Saved hospitals
+        </span>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =====================================
+       LOADING STATE
+  ====================================== -->
+
+  @if (loading()) {
+    <section
+      class="favorites-loading"
+      aria-live="polite"
+    >
+      <div
+        class="favorites-spinner"
+        aria-hidden="true"
+      >
+      </div>
+
+      <h2>
+        Loading saved hospitals
+      </h2>
+
+      <p>
+        Your saved hospitals are being
+        retrieved from the backend.
+      </p>
+    </section>
+
+  } @else if (
+    errorMessage() &&
+    favoriteHospitals().length === 0
+  ) {
+
+    <!-- =====================================
+         FULL ERROR STATE
+    ====================================== -->
+
+    <section class="favorites-error">
+      <div
+        class="error-icon"
+        aria-hidden="true"
+      >
+        !
+      </div>
+
+      <h2>
+        Saved hospitals could not be loaded
+      </h2>
+
+      <p>
+        {{ errorMessage() }}
+      </p>
+
+      <div class="error-actions">
+        <button
+          type="button"
+          (click)="loadFavorites()"
+        >
+          Try again
+        </button>
+
+        <a routerLink="/login">
+          Sign in
+        </a>
+
+        <a routerLink="/hospitals">
+          Browse hospitals
+        </a>
+      </div>
+    </section>
+
+  } @else if (
+    favoriteHospitals().length > 0
+  ) {
+
+    <!-- =====================================
+         SAVED HOSPITALS
+    ====================================== -->
+
+    <section class="favorites-content">
+
+      <!-- NON-BLOCKING ERROR -->
+
+      @if (errorMessage()) {
+        <div
+          class="favorites-warning"
+          role="alert"
+        >
+          <span aria-hidden="true">
+            !
+          </span>
+
+          <p>
+            {{ errorMessage() }}
+          </p>
+
+          <button
+            type="button"
+            (click)="loadFavorites()"
+          >
+            Refresh
+          </button>
+        </div>
+      }
+
+
+      <!-- SECTION HEADER -->
+
+      <header class="section-header">
+        <div>
+          <span class="eyebrow">
+            Your collection
+          </span>
+
+          <h2>
+            {{ favoriteHospitals().length }}
+
+            hospital{{
+              favoriteHospitals().length === 1
+                ? ''
+                : 's'
+            }}
+          </h2>
+
+          <p>
+            Review your saved hospitals or
+            remove hospitals you no longer need.
+          </p>
+        </div>
+
+        <div class="header-actions">
+          <a
+            routerLink="/hospitals"
+            class="browse-button"
+          >
+            + Add hospitals
+          </a>
+
+          <button
+            type="button"
+            class="clear-button"
+            [disabled]="clearing()"
+            [attr.aria-busy]="clearing()"
+            (click)="clearFavorites()"
+          >
+            @if (clearing()) {
+              <span
+                class="button-spinner"
+                aria-hidden="true"
+              >
+              </span>
+
+              Clearing…
+
+            } @else {
+              Clear all
+            }
+          </button>
+        </div>
+      </header>
+
+
+      <!-- =====================================
+           FAVORITES GRID
+      ====================================== -->
+
+      <div class="favorites-grid">
+        @for (
+          hospital of favoriteHospitals();
+          track hospital.id
+        ) {
+          <article class="favorite-card">
+
+            <!-- CARD TOP -->
+
+            <div class="card-top">
+              <div class="hospital-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M4 20V8l8-5 8 5v12M9 20v-5h6v5M12 7v5M9.5 9.5h5"
+                  />
+                </svg>
+              </div>
+
+              <span class="accreditation">
+                {{ hospital.accreditation }}
+              </span>
+
+
+              <!-- REMOVE FAVORITE -->
+
+              <button
+                type="button"
+                class="remove-favorite"
+                [class.loading]="
+                  isRemoving(hospital.id)
+                "
+                [disabled]="
+                  isRemoving(hospital.id)
+                "
+                [attr.aria-busy]="
+                  isRemoving(hospital.id)
+                "
+                (click)="
+                  removeFavorite(hospital.id)
+                "
+                [attr.aria-label]="
+                  'Remove ' +
+                  hospital.name +
+                  ' from saved hospitals'
+                "
+                title="Remove from saved hospitals"
+              >
+                @if (
+                  isRemoving(hospital.id)
+                ) {
+                  <span
+                    class="remove-spinner"
+                    aria-hidden="true"
+                  >
+                  </span>
+
+                } @else {
+                  <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"
+                    />
+                  </svg>
+                }
+              </button>
+            </div>
+
+
+            <!-- LOCATION -->
+
+            <p class="location">
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  d="M12 21s7-5.2 7-12a7 7 0 1 0-14 0c0 6.8 7 12 7 12Z"
+                />
+
+                <circle
+                  cx="12"
+                  cy="9"
+                  r="2.4"
+                />
+              </svg>
+
+              {{ hospital.city }},
+              {{ hospital.state }}
+            </p>
+
+
+            <!-- HOSPITAL INFORMATION -->
+
+            <h2>
+              {{ hospital.name }}
+            </h2>
+
+            <p class="hospital-type">
+              {{ hospital.type }}
+              ·
+              {{ hospital.beds }}
+              beds
+            </p>
+
+
+            <!-- RATING -->
+
+            <div class="rating-row">
+              <strong>
+                <span aria-hidden="true">
+                  ★
+                </span>
+
+                {{ hospital.rating }}
+              </strong>
+
+              <span>
+                {{ hospital.reviews }}
+                reviews
+              </span>
+            </div>
+
+
+            <!-- SERVICES -->
+
+            <div class="service-list">
+              <span
+                [class.available]="
+                  hospital.emergency
+                "
+                [class.unavailable]="
+                  !hospital.emergency
+                "
+              >
+                {{
+                  hospital.emergency
+                    ? '● Emergency'
+                    : '○ No emergency'
+                }}
+              </span>
+
+              <span
+                [class.available]="
+                  hospital.open24x7
+                "
+                [class.unavailable]="
+                  !hospital.open24x7
+                "
+              >
+                {{
+                  hospital.open24x7
+                    ? '✓ Open 24×7'
+                    : '○ Limited hours'
+                }}
+              </span>
+            </div>
+
+
+            <!-- SPECIALTIES -->
+
+            <div class="information-block">
+              <span class="block-title">
+                Top specialties
+              </span>
+
+              <div class="tag-list">
+                @for (
+                  specialty of
+                    hospital.specialties.slice(
+                      0,
+                      3
+                    );
+                  track specialty
+                ) {
+                  <span>
+                    {{ specialty }}
+                  </span>
+                }
+              </div>
+            </div>
+
+
+            <!-- INSURANCE -->
+
+            <div class="information-block">
+              <span class="block-title">
+                Listed insurance
+              </span>
+
+              <div class="tag-list insurance">
+                @for (
+                  provider of
+                    hospital.insurance.slice(
+                      0,
+                      3
+                    );
+                  track provider
+                ) {
+                  <span>
+                    {{ provider }}
+                  </span>
+                }
+
+                @if (
+                  hospital.insurance.length > 3
+                ) {
+                  <span>
+                    +{{
+                      hospital.insurance.length -
+                        3
+                    }}
+                  </span>
+                }
+              </div>
+            </div>
+
+
+            <!-- CARD FOOTER -->
+
+            <footer class="card-footer">
+              <span>
+                Saved to your account
+              </span>
+
+              <a
+                [routerLink]="[
+                  '/hospital-details',
+                  hospital.id
+                ]"
+              >
+                View Profile
+
+                <svg
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="m9 18 6-6-6-6"
+                  />
+                </svg>
+              </a>
+            </footer>
+          </article>
+        }
+      </div>
+    </section>
+
+  } @else {
+
+    <!-- =====================================
+         EMPTY FAVORITES
+    ====================================== -->
+
+    <section class="empty-state">
+      <div class="empty-heart">
+        <svg
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path
+            d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"
+          />
+        </svg>
+      </div>
+
+      <h2>
+        No saved hospitals yet
+      </h2>
+
+      <p>
+        Click the heart icon on any hospital
+        card to add it to your saved hospitals.
+      </p>
+
+      <a
+        routerLink="/hospitals"
+        class="primary-button"
+      >
+        Browse Hospitals
+      </a>
+    </section>
+  }
+
+</main>

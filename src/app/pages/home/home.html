@@ -1,0 +1,143 @@
+<main class="home-page">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-shell">
+      <div class="hero-copy">
+        <span class="eyebrow"><span aria-hidden="true"></span> Pan-India hospital discovery</span>
+        <h1 id="hero-title">Find the right hospital <em>inside your insurance network.</em></h1>
+        <p class="hero-lead">Compare hospital profiles, supported insurers, essential services and distance—all in one clear search.</p>
+
+        <div class="search-card" aria-label="Search hospitals">
+          <div class="field-group">
+            <label for="home-location">Location</label>
+            <div class="field-control">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-5.2 7-12a7 7 0 1 0-14 0c0 6.8 7 12 7 12Z"/><circle cx="12" cy="9" r="2.4"/></svg>
+              <input id="home-location" type="search" [(ngModel)]="location" placeholder="City or state" autocomplete="address-level2">
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="home-insurance">Insurance provider</label>
+            <div class="field-control">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v5c0 4.5 2.8 8.2 7 10 4.2-1.8 7-5.5 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg>
+              <select id="home-insurance" [(ngModel)]="insurance">
+                <option value="">All insurance providers</option>
+                @for (provider of insuranceProviders; track provider) {
+                  <option [value]="provider">{{ provider }}</option>
+                }
+              </select>
+            </div>
+          </div>
+
+          <a class="search-button" routerLink="/hospitals" [queryParams]="{ location: location, insurance: insurance }">
+            Search network
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+          </a>
+        </div>
+
+        <div class="quick-searches" aria-label="Popular city searches">
+          <span>Popular:</span>
+          @for (city of quickCities; track city) {
+            <a routerLink="/hospitals" [queryParams]="{ location: city }">{{ city }}</a>
+          }
+        </div>
+
+        <p class="directory-note">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v5c0 4.5 2.8 8.2 7 10 4.2-1.8 7-5.5 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg>
+          Demo directory for project use. Confirm live cashless eligibility with the hospital or insurer.
+        </p>
+      </div>
+
+      <aside class="network-card" aria-label="Network overview">
+        <div class="network-heading">
+          <div><span class="status-dot" aria-hidden="true"></span><strong>Directory overview</strong></div>
+          <span class="live-badge">Updated dataset</span>
+        </div>
+
+        <div class="network-total">
+          <span>Hospitals available to explore</span>
+          <strong>{{ hospitals.length }}</strong>
+          <small>Across {{ stateCount }} states and union territories</small>
+        </div>
+
+        <div class="coverage-list">
+          <div class="coverage-title"><strong>Top city coverage</strong><span>Listings</span></div>
+          @for (city of cityCoverage; track city.name) {
+            <div class="coverage-row">
+              <div><span>{{ city.name }}</span><strong>{{ city.count }}</strong></div>
+              <div class="coverage-track"><span [style.width.%]="city.width"></span></div>
+            </div>
+          }
+        </div>
+
+        <div class="network-footer">
+          <div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v20M2 12h20"/></svg><span><strong>{{ emergencyCount }}</strong><small>Emergency listings</small></span></div>
+          <div><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span><strong>24×7</strong><small>Service filters</small></span></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="trust-strip" aria-label="Platform highlights">
+    <div><strong>{{ hospitals.length }}</strong><span>Hospital profiles</span></div>
+    <div><strong>{{ stateCount }}</strong><span>States & UTs covered</span></div>
+    <div><strong>{{ insuranceProviders.length }}</strong><span>Insurance providers</span></div>
+    <div><strong>Free</strong><span>To search and compare</span></div>
+  </section>
+
+  @if (auth.currentUser(); as user) {
+    <section class="welcome-strip" aria-label="Personalized account summary">
+      <div class="welcome-avatar" aria-hidden="true">{{ user.name.charAt(0).toUpperCase() }}</div>
+      <div><span>Welcome back</span><h2>Hello, {{ user.name }}</h2><p>Your profile and saved hospitals are ready.</p></div>
+      <a routerLink="/profile">Open profile <span aria-hidden="true">→</span></a>
+    </section>
+  }
+
+  <section class="process-section" aria-labelledby="process-title">
+    <div class="section-heading split-heading">
+      <div><span>Built for confident decisions</span><h2 id="process-title">From insurance card to care options in minutes.</h2></div>
+      <p>CareFinder turns a confusing network search into a simple, comparable shortlist.</p>
+    </div>
+    <div class="process-grid">
+      <article><span>01</span><div class="process-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-5.2 7-12a7 7 0 1 0-14 0c0 6.8 7 12 7 12Z"/><circle cx="12" cy="9" r="2.4"/></svg></div><h3>Choose your location</h3><p>Search by city, state or use GPS to calculate nearby options.</p></article>
+      <article><span>02</span><div class="process-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v5c0 4.5 2.8 8.2 7 10 4.2-1.8 7-5.5 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg></div><h3>Match your insurer</h3><p>Filter the directory using eight leading insurance providers.</p></article>
+      <article><span>03</span><div class="process-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V9l8-5 8 5v10"/><path d="M9 19v-5h6v5M8 10h.01M16 10h.01"/></svg></div><h3>Compare care profiles</h3><p>Review ratings, specialties, service availability and directions.</p></article>
+    </div>
+  </section>
+
+  <section class="featured-section" aria-labelledby="featured-title">
+    <div class="section-heading">
+      <span>Recommended profiles</span>
+      <h2 id="featured-title">Start with highly rated hospitals</h2>
+      <p>Explore representative profiles from the nationwide directory.</p>
+    </div>
+    <div class="featured-grid">
+      @for (hospital of featuredHospitals; track hospital.id) {
+        <article class="featured-card">
+          <div class="card-topline"><span>{{ hospital.accreditation }}</span><strong><b aria-hidden="true">★</b> {{ hospital.rating }}</strong></div>
+          <div class="hospital-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 20V8l8-5 8 5v12M9 20v-5h6v5M12 7v5M9.5 9.5h5"/></svg></div>
+          <h3>{{ hospital.name }}</h3>
+          <p class="featured-location">{{ hospital.city }}, {{ hospital.state }}</p>
+          <div class="specialty-row">
+            @for (specialty of hospital.specialties.slice(0, 2); track specialty) { <span>{{ specialty }}</span> }
+          </div>
+          <div class="featured-footer"><span>{{ hospital.reviews }} reviews</span><a [routerLink]="['/hospital-details', hospital.id]">View profile <b aria-hidden="true">→</b></a></div>
+        </article>
+      }
+    </div>
+    <div class="view-all"><a routerLink="/hospitals">Browse all {{ hospitals.length }} hospitals <span aria-hidden="true">→</span></a></div>
+  </section>
+
+  <section class="insurance-section" aria-labelledby="insurance-title">
+    <div class="insurance-intro"><span>Insurance network</span><h2 id="insurance-title">Search using the provider already on your card.</h2><p>Select a provider to open matching hospital profiles.</p></div>
+    <div class="insurance-grid">
+      @for (provider of insuranceProviders; track provider; let index = $index) {
+        <a routerLink="/hospitals" [queryParams]="{ insurance: provider }"><b aria-hidden="true">{{ index + 1 < 10 ? '0' + (index + 1) : index + 1 }}</b><span>{{ provider }}</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+      }
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div><span>100 profiles. One simpler search.</span><h2>Start your hospital shortlist today.</h2><p>Filter by location, insurance, rating, emergency services and distance.</p></div>
+    <a routerLink="/hospitals">Explore the directory <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+  </section>
+</main>

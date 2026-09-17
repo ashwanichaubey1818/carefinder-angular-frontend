@@ -1,0 +1,733 @@
+<main class="profile-page">
+  @if (loading() && !user()) {
+    <section class="empty-saved">
+      <div aria-hidden="true">
+        ⟳
+      </div>
+
+      <h3>
+        Loading your profile
+      </h3>
+
+      <p>
+        Your CareFinder account information
+        is being retrieved.
+      </p>
+    </section>
+
+  } @else if (user(); as account) {
+    <!-- =====================================
+         PROFILE HERO
+    ====================================== -->
+
+    <section class="profile-hero">
+      <div class="profile-hero-inner">
+        <div
+          class="avatar"
+          aria-hidden="true"
+        >
+          {{ initials() }}
+        </div>
+
+        <div class="identity">
+          <span class="status-pill">
+            <i></i>
+
+            Active member
+          </span>
+
+          <h1>
+            {{ account.name }}
+          </h1>
+
+          <p>
+            {{ account.email }}
+          </p>
+        </div>
+
+        <button
+          class="edit-button"
+          type="button"
+          (click)="startEditing()"
+        >
+          <span aria-hidden="true">
+            ✎
+          </span>
+
+          Edit profile
+        </button>
+      </div>
+    </section>
+
+
+    <div class="profile-layout">
+      <!-- =====================================
+           ACCOUNT SUMMARY
+      ====================================== -->
+
+      <section
+        class="summary-grid"
+        aria-label="Profile summary"
+      >
+        <article>
+          <span
+            class="summary-icon heart"
+            aria-hidden="true"
+          >
+            ♥
+          </span>
+
+          <div>
+            <strong>
+              {{ savedHospitalsCount() }}
+            </strong>
+
+            <small>
+              Saved hospitals
+            </small>
+          </div>
+        </article>
+
+        <article>
+          <span
+            class="summary-icon calendar"
+            aria-hidden="true"
+          >
+            ◷
+          </span>
+
+          <div>
+            <strong>
+              {{ recentlyViewedCount() }}
+            </strong>
+
+            <small>
+              Recently viewed
+            </small>
+          </div>
+        </article>
+
+        <article>
+          <span
+            class="summary-icon shield"
+            aria-hidden="true"
+          >
+            ✓
+          </span>
+
+          <div>
+            <strong>
+              {{
+                account.insuranceProvider ||
+                'Not added'
+              }}
+            </strong>
+
+            <small>
+              Preferred insurance
+            </small>
+          </div>
+        </article>
+
+        <article>
+          <span
+            class="summary-icon calendar"
+            aria-hidden="true"
+          >
+            ◫
+          </span>
+
+          <div>
+            <strong>
+              {{ memberSince() }}
+            </strong>
+
+            <small>
+              CareFinder member
+            </small>
+          </div>
+        </article>
+      </section>
+
+
+      <!-- =====================================
+           PROFILE CONTENT
+      ====================================== -->
+
+      <div class="content-grid">
+        <section
+          class="profile-card account-card"
+          aria-labelledby="account-heading"
+        >
+          <div class="card-heading">
+            <div>
+              <span>
+                Account
+              </span>
+
+              <h2 id="account-heading">
+                Personal information
+              </h2>
+            </div>
+
+            @if (!editing()) {
+              <button
+                type="button"
+                (click)="startEditing()"
+              >
+                Update details
+              </button>
+            }
+          </div>
+
+
+          <!-- EDIT FORM -->
+
+          @if (editing()) {
+            <form
+              [formGroup]="profileForm"
+              (ngSubmit)="saveProfile()"
+              novalidate
+            >
+              <div class="form-grid">
+                <div class="field">
+                  <label for="profile-name">
+                    Full name
+                  </label>
+
+                  <input
+                    id="profile-name"
+                    type="text"
+                    formControlName="name"
+                    autocomplete="name"
+                  />
+
+                  @if (
+                    profileForm.controls.name
+                      .touched &&
+                    profileForm.controls.name
+                      .invalid
+                  ) {
+                    <small>
+                      Enter at least 2 characters.
+                    </small>
+                  }
+                </div>
+
+                <div class="field">
+                  <label for="profile-mobile">
+                    Mobile number
+                  </label>
+
+                  <input
+                    id="profile-mobile"
+                    type="tel"
+                    inputmode="numeric"
+                    formControlName="mobile"
+                    autocomplete="tel"
+                  />
+
+                  @if (
+                    profileForm.controls.mobile
+                      .touched &&
+                    profileForm.controls.mobile
+                      .invalid
+                  ) {
+                    <small>
+                      Enter a valid Indian mobile
+                      number.
+                    </small>
+                  }
+                </div>
+
+                <div class="field">
+                  <label for="profile-city">
+                    City
+                  </label>
+
+                  <input
+                    id="profile-city"
+                    type="text"
+                    formControlName="city"
+                    autocomplete="address-level2"
+                    placeholder="Add your city"
+                  />
+                </div>
+
+                <div class="field">
+                  <label for="profile-insurance">
+                    Preferred insurance
+                  </label>
+
+                  <select
+                    id="profile-insurance"
+                    formControlName="insuranceProvider"
+                  >
+                    <option value="">
+                      Select provider
+                    </option>
+
+                    <option>
+                      Star Health
+                    </option>
+
+                    <option>
+                      Niva Bupa
+                    </option>
+
+                    <option>
+                      HDFC ERGO
+                    </option>
+
+                    <option>
+                      ICICI Lombard
+                    </option>
+
+                    <option>
+                      Bajaj Allianz
+                    </option>
+
+                    <option>
+                      Care Health
+                    </option>
+
+                    <option>
+                      Tata AIG
+                    </option>
+
+                    <option>
+                      Aditya Birla Health
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              @if (message()) {
+                <div
+                  class="profile-message"
+                  [class.success]="
+                    messageType() === 'success'
+                  "
+                  role="status"
+                >
+                  {{ message() }}
+                </div>
+              }
+
+              <div class="form-actions">
+                <button
+                  class="secondary-button"
+                  type="button"
+                  (click)="cancelEditing()"
+                  [disabled]="saving()"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  class="save-button"
+                  type="submit"
+                  [disabled]="saving()"
+                >
+                  {{
+                    saving()
+                      ? 'Saving...'
+                      : 'Save changes'
+                  }}
+                </button>
+              </div>
+            </form>
+
+          } @else {
+            @if (message()) {
+              <div
+                class="profile-message"
+                [class.success]="
+                  messageType() === 'success'
+                "
+                role="status"
+              >
+                {{ message() }}
+              </div>
+            }
+
+            <div class="detail-list">
+              <div>
+                <span
+                  class="detail-icon"
+                  aria-hidden="true"
+                >
+                  ●
+                </span>
+
+                <p>
+                  <small>
+                    Full name
+                  </small>
+
+                  <strong>
+                    {{ account.name }}
+                  </strong>
+                </p>
+              </div>
+
+              <div>
+                <span
+                  class="detail-icon"
+                  aria-hidden="true"
+                >
+                  ✉
+                </span>
+
+                <p>
+                  <small>
+                    Email address
+                  </small>
+
+                  <strong>
+                    {{ account.email }}
+                  </strong>
+                </p>
+              </div>
+
+              <div>
+                <span
+                  class="detail-icon"
+                  aria-hidden="true"
+                >
+                  ☎
+                </span>
+
+                <p>
+                  <small>
+                    Mobile number
+                  </small>
+
+                  <strong>
+                    {{ account.mobile }}
+                  </strong>
+                </p>
+              </div>
+
+              <div>
+                <span
+                  class="detail-icon"
+                  aria-hidden="true"
+                >
+                  ⌖
+                </span>
+
+                <p>
+                  <small>
+                    City
+                  </small>
+
+                  <strong>
+                    {{
+                      account.city ||
+                      'Not added yet'
+                    }}
+                  </strong>
+                </p>
+              </div>
+
+              <div>
+                <span
+                  class="detail-icon"
+                  aria-hidden="true"
+                >
+                  ◇
+                </span>
+
+                <p>
+                  <small>
+                    Insurance preference
+                  </small>
+
+                  <strong>
+                    {{
+                      account.insuranceProvider ||
+                      'Not selected yet'
+                    }}
+                  </strong>
+                </p>
+              </div>
+
+              <div>
+                <span
+                  class="detail-icon"
+                  aria-hidden="true"
+                >
+                  ✓
+                </span>
+
+                <p>
+                  <small>
+                    Account status
+                  </small>
+
+                  <strong class="verified">
+                    Verified
+                  </strong>
+                </p>
+              </div>
+            </div>
+          }
+        </section>
+
+
+        <!-- =====================================
+             QUICK ACTIONS
+        ====================================== -->
+
+        <aside class="profile-card quick-card">
+          <span>
+            Quick actions
+          </span>
+
+          <h2>
+            Continue exploring
+          </h2>
+
+          <a routerLink="/hospitals">
+            <i aria-hidden="true">
+              ⌕
+            </i>
+
+            <p>
+              <strong>
+                Find hospitals
+              </strong>
+
+              <small>
+                Search by location and insurance
+              </small>
+            </p>
+
+            <b aria-hidden="true">
+              →
+            </b>
+          </a>
+
+          <a routerLink="/favorites">
+            <i aria-hidden="true">
+              ♥
+            </i>
+
+            <p>
+              <strong>
+                Saved hospitals
+              </strong>
+
+              <small>
+                View your hospital shortlist
+              </small>
+            </p>
+
+            <b aria-hidden="true">
+              →
+            </b>
+          </a>
+
+          <a routerLink="/recently-viewed">
+            <i aria-hidden="true">
+              ◷
+            </i>
+
+            <p>
+              <strong>
+                Recently viewed
+              </strong>
+
+              <small>
+                Return to previously viewed profiles
+              </small>
+            </p>
+
+            <b aria-hidden="true">
+              →
+            </b>
+          </a>
+
+          <a routerLink="/how-it-works">
+            <i aria-hidden="true">
+              ?
+            </i>
+
+            <p>
+              <strong>
+                How it works
+              </strong>
+
+              <small>
+                Learn the simple search process
+              </small>
+            </p>
+
+            <b aria-hidden="true">
+              →
+            </b>
+          </a>
+        </aside>
+      </div>
+
+
+      <!-- =====================================
+           SAVED HOSPITALS
+      ====================================== -->
+
+      <section
+        class="saved-section"
+        aria-labelledby="saved-heading"
+      >
+        <div class="saved-heading">
+          <div>
+            <span>
+              Your shortlist
+            </span>
+
+            <h2 id="saved-heading">
+              Saved hospitals
+            </h2>
+          </div>
+
+          <a routerLink="/favorites">
+            View all saved hospitals →
+          </a>
+        </div>
+
+        @if (favoritesLoading()) {
+          <div class="empty-saved">
+            <div aria-hidden="true">
+              ⟳
+            </div>
+
+            <h3>
+              Loading saved hospitals
+            </h3>
+
+            <p>
+              Your saved hospital list is being
+              retrieved from the backend.
+            </p>
+          </div>
+
+        } @else if (favoritesError()) {
+          <div class="empty-saved">
+            <div aria-hidden="true">
+              !
+            </div>
+
+            <h3>
+              Saved hospitals unavailable
+            </h3>
+
+            <p>
+              {{ favoritesError() }}
+            </p>
+
+            <button
+              type="button"
+              (click)="loadSavedHospitals()"
+            >
+              Try again
+            </button>
+          </div>
+
+        } @else if (
+          savedHospitals().length > 0
+        ) {
+          <div class="saved-grid">
+            @for (
+              hospital of savedHospitals();
+              track hospital.id
+            ) {
+              <article class="saved-card">
+                <div
+                  class="saved-hospital-icon"
+                  aria-hidden="true"
+                >
+                  +
+                </div>
+
+                <div>
+                  <h3>
+                    {{ hospital.name }}
+                  </h3>
+
+                  <p>
+                    ⌖
+                    {{ hospital.city }},
+                    {{ hospital.state }}
+                  </p>
+
+                  <span>
+                    ★ {{ hospital.rating }}
+                    ·
+                    {{ hospital.insurance.length }}
+                    insurance plans
+                  </span>
+                </div>
+
+                <a
+                  [routerLink]="[
+                    '/hospital-details',
+                    hospital.id
+                  ]"
+                  [attr.aria-label]="
+                    'View ' + hospital.name
+                  "
+                >
+                  →
+                </a>
+              </article>
+            }
+          </div>
+
+        } @else {
+          <div class="empty-saved">
+            <div aria-hidden="true">
+              ♡
+            </div>
+
+            <h3>
+              No saved hospitals yet
+            </h3>
+
+            <p>
+              Tap the heart on any hospital card
+              to keep it here for quick access.
+            </p>
+
+            <a routerLink="/hospitals">
+              Find hospitals
+            </a>
+          </div>
+        }
+      </section>
+    </div>
+
+  } @else {
+    <!-- =====================================
+         PROFILE ERROR
+    ====================================== -->
+
+    <section class="empty-saved">
+      <div aria-hidden="true">
+        !
+      </div>
+
+      <h3>
+        Profile unavailable
+      </h3>
+
+      <p>
+        {{ message() || 'Please sign in to view your profile.' }}
+      </p>
+
+      <a routerLink="/login">
+        Sign in
+      </a>
+    </section>
+  }
+</main>

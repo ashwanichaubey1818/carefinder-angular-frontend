@@ -1,0 +1,537 @@
+<main class="emergency-page">
+  <!-- =====================================
+       EMERGENCY HERO
+  ====================================== -->
+
+  <section class="emergency-hero">
+    <div class="hero-content">
+      <nav
+        class="breadcrumb"
+        aria-label="Breadcrumb"
+      >
+        <a routerLink="/">
+          Home
+        </a>
+
+        <span aria-hidden="true">
+          /
+        </span>
+
+        <span>
+          Emergency SOS
+        </span>
+      </nav>
+
+      <span class="eyebrow">
+        Rapid care finder
+      </span>
+
+      <h1>
+        Emergency Hospital Finder
+      </h1>
+
+      <p>
+        Find emergency hospitals near your
+        current location and open turn-by-turn
+        directions immediately.
+      </p>
+
+      <div class="hero-actions">
+        <button
+          type="button"
+          class="location-button"
+          (click)="useMyLocation()"
+          [disabled]="isLocating"
+        >
+          @if (isLocating) {
+            <span
+              class="button-spinner"
+              aria-hidden="true"
+            ></span>
+
+            Detecting location...
+          } @else {
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <circle
+                cx="12"
+                cy="12"
+                r="3"
+              />
+
+              <circle
+                cx="12"
+                cy="12"
+                r="8"
+              />
+
+              <path
+                d="M12 2v3M12 19v3M2 12h3M19 12h3"
+              />
+            </svg>
+
+            Find Near Me
+          }
+        </button>
+
+        <a
+          class="emergency-call"
+          href="tel:112"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              d="M7 3h3l2 5-2 2c1.2 2.3 2.8 3.9 5 5l2-2 4 2v3c0 1.1-.9 2-2 2C10.7 20 4 13.3 4 5c0-1.1.9-2 2-2h1Z"
+            />
+          </svg>
+
+          Call 112
+        </a>
+      </div>
+    </div>
+
+    <div class="sos-panel">
+      <span class="sos-label">
+        National emergency
+      </span>
+
+      <strong>
+        112
+      </strong>
+
+      <p>
+        Police, fire, rescue and health
+        emergency response.
+      </p>
+
+      <a href="tel:112">
+        Call emergency services
+      </a>
+    </div>
+  </section>
+
+
+  <!-- =====================================
+       IMPORTANT WARNING
+  ====================================== -->
+
+  <section
+    class="emergency-warning"
+    role="note"
+  >
+    <span
+      class="warning-icon"
+      aria-hidden="true"
+    >
+      !
+    </span>
+
+    <div>
+      <strong>
+        In a life-threatening emergency
+      </strong>
+
+      <p>
+        Call 112 immediately. CareFinder is a
+        hospital directory and does not dispatch
+        ambulances or medical teams.
+      </p>
+    </div>
+  </section>
+
+
+  <!-- =====================================
+       SEARCH CONTROLS
+  ====================================== -->
+
+  <section class="control-panel">
+    <div class="location-status">
+      <span
+        class="status-dot"
+        [class.locating]="
+          locationState() === 'locating'
+        "
+        [class.success]="
+          locationState() === 'success'
+        "
+        [class.error]="
+          locationState() === 'error'
+        "
+      ></span>
+
+      <div>
+        <strong>
+          Location status
+        </strong>
+
+        <p>
+          {{ locationMessage() }}
+        </p>
+
+        @if (
+          locationState() === 'success' &&
+          locationAccuracy !== null
+        ) {
+          <small>
+            Approximate accuracy:
+            {{ locationAccuracy }} metres
+          </small>
+        }
+      </div>
+    </div>
+
+    <div class="search-controls">
+      <label>
+        City or hospital
+
+        <input
+          type="search"
+          [(ngModel)]="cityQuery"
+          (ngModelChange)="onSearchChange()"
+          placeholder="Search city or hospital"
+        />
+      </label>
+
+      <label>
+        Search radius
+
+        <select
+          [(ngModel)]="radius"
+          (change)="updateRadius()"
+          [disabled]="
+            locationState() !== 'success'
+          "
+        >
+          @for (
+            option of radiusOptions;
+            track option
+          ) {
+            <option [ngValue]="option">
+              Within {{ option }} km
+            </option>
+          }
+        </select>
+      </label>
+
+      <button
+        type="button"
+        class="all-button"
+        (click)="showAllEmergencyHospitals()"
+      >
+        Show all emergency hospitals
+      </button>
+    </div>
+  </section>
+
+
+  <!-- =====================================
+       LOADING
+  ====================================== -->
+
+  @if (loading()) {
+    <section class="no-emergency-results">
+      <div aria-hidden="true">
+        ⟳
+      </div>
+
+      <h3>
+        Loading emergency hospitals
+      </h3>
+
+      <p>
+        Emergency facilities are being retrieved
+        from the CareFinder backend.
+      </p>
+    </section>
+
+  } @else if (errorMessage()) {
+    <!-- =====================================
+         ERROR
+    ====================================== -->
+
+    <section class="no-emergency-results">
+      <div aria-hidden="true">
+        !
+      </div>
+
+      <h3>
+        Emergency directory unavailable
+      </h3>
+
+      <p>
+        {{ errorMessage() }}
+      </p>
+
+      <button
+        type="button"
+        (click)="loadEmergencyHospitals()"
+      >
+        Try again
+      </button>
+    </section>
+
+  } @else {
+    <!-- =====================================
+         RESULT SUMMARY
+    ====================================== -->
+
+    <section class="result-section">
+      <header class="result-header">
+        <div>
+          <span class="eyebrow">
+            Emergency network
+          </span>
+
+          <h2>
+            {{ matchingHospitalCount }}
+            matching emergency hospitals
+          </h2>
+
+          <p>
+            {{ totalEmergencyHospitals }}
+            emergency facilities and
+            {{ open24x7Count }}
+            open 24×7 listings in the directory.
+          </p>
+
+          @if (backgroundLoading()) {
+            <small>
+              Loading remaining emergency
+              hospitals…
+            </small>
+          }
+
+          @if (warningMessage()) {
+            <small>
+              {{ warningMessage() }}
+            </small>
+          }
+        </div>
+      </header>
+
+
+      <!-- =====================================
+           HOSPITAL RESULTS
+      ====================================== -->
+
+      @if (visibleHospitals.length > 0) {
+        <div class="emergency-grid">
+          @for (
+            result of visibleHospitals;
+            track result.hospital.id;
+            let index = $index
+          ) {
+            <article
+              class="emergency-card"
+              [class.nearest]="
+                locationState() ===
+                  'success' &&
+                index === 0
+              "
+            >
+              @if (
+                locationState() ===
+                  'success' &&
+                index === 0
+              ) {
+                <span class="nearest-badge">
+                  Nearest emergency hospital
+                </span>
+              }
+
+              <div class="card-header">
+                <div
+                  class="hospital-icon"
+                  aria-hidden="true"
+                >
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M4 20V8l8-5 8 5v12M9 20v-5h6v5M12 7v5M9.5 9.5h5"
+                    />
+                  </svg>
+                </div>
+
+                <div class="card-rating">
+                  <span aria-hidden="true">
+                    ★
+                  </span>
+
+                  {{ result.hospital.rating }}
+                </div>
+              </div>
+
+              <p class="hospital-location">
+                {{ result.hospital.city }},
+                {{ result.hospital.state }}
+              </p>
+
+              <h3>
+                {{ result.hospital.name }}
+              </h3>
+
+              <p class="hospital-type">
+                {{ result.hospital.type }}
+                ·
+                {{ result.hospital.beds }}
+                beds
+              </p>
+
+              @if (
+                result.distanceKm !== null
+              ) {
+                <div class="distance-display">
+                  <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M12 21s7-5.2 7-12a7 7 0 1 0-14 0c0 6.8 7 12 7 12Z"
+                    />
+
+                    <circle
+                      cx="12"
+                      cy="9"
+                      r="2.4"
+                    />
+                  </svg>
+
+                  <strong>
+                    {{
+                      formatDistance(
+                        result.distanceKm
+                      )
+                    }}
+                  </strong>
+                </div>
+              }
+
+              <div class="service-tags">
+                <span class="emergency-tag">
+                  ● Emergency available
+                </span>
+
+                <span
+                  [class.open]="
+                    result.hospital.open24x7
+                  "
+                >
+                  {{
+                    result.hospital.open24x7
+                      ? '✓ Open 24×7'
+                      : '○ Standard hours'
+                  }}
+                </span>
+              </div>
+
+              <div class="specialty-list">
+                @for (
+                  specialty of
+                    result.hospital
+                      .specialties
+                      .slice(0, 3);
+                  track specialty
+                ) {
+                  <span>
+                    {{ specialty }}
+                  </span>
+                }
+              </div>
+
+              <footer class="card-actions">
+                <a
+                  class="profile-link"
+                  [routerLink]="[
+                    '/hospital-details',
+                    result.hospital.id
+                  ]"
+                >
+                  View Profile
+                </a>
+
+                <a
+                  class="directions-link"
+                  [href]="
+                    getDirectionsUrl(
+                      result.hospital
+                    )
+                  "
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Get Directions
+
+                  <span aria-hidden="true">
+                    →
+                  </span>
+                </a>
+              </footer>
+            </article>
+          }
+        </div>
+
+
+        <!-- LOAD MORE -->
+
+        @if (hasMoreHospitals) {
+          <div class="no-emergency-results">
+            <button
+              type="button"
+              (click)="loadMore()"
+            >
+              Load more hospitals
+            </button>
+
+            <p>
+              Showing
+              {{ visibleHospitals.length }}
+              of
+              {{ matchingHospitalCount }}
+              matching hospitals.
+            </p>
+          </div>
+        }
+
+      } @else {
+        <div class="no-emergency-results">
+          <div aria-hidden="true">
+            ⌖
+          </div>
+
+          <h3>
+            No emergency hospital found
+          </h3>
+
+          <p>
+            Increase the search radius, search
+            using another city, or show all
+            emergency hospitals.
+          </p>
+
+          @if (
+            locationState() === 'success'
+          ) {
+            <button
+              type="button"
+              (click)="increaseRadius()"
+            >
+              Search within 200 km
+            </button>
+          } @else {
+            <button
+              type="button"
+              (click)="
+                showAllEmergencyHospitals()
+              "
+            >
+              Show all hospitals
+            </button>
+          }
+        </div>
+      }
+    </section>
+  }
+</main>

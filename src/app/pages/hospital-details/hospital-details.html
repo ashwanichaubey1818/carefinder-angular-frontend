@@ -1,0 +1,605 @@
+<main class="details-page">
+
+  <!-- =====================================
+       LOADING STATE
+  ====================================== -->
+
+  @if (loading) {
+    <section
+      class="details-loading"
+      aria-live="polite"
+    >
+      <div
+        class="loading-spinner"
+        aria-hidden="true"
+      >
+      </div>
+
+      <h1>
+        Loading hospital profile
+      </h1>
+
+      <p>
+        Please wait while we retrieve
+        the hospital information.
+      </p>
+    </section>
+
+  } @else if (hospital) {
+
+    <!-- =====================================
+         DETAILS HERO
+    ====================================== -->
+
+    <section class="details-hero">
+      <div class="hero-inner">
+
+        <nav
+          class="breadcrumb"
+          aria-label="Breadcrumb"
+        >
+          <a routerLink="/">
+            Home
+          </a>
+
+          <span aria-hidden="true">
+            /
+          </span>
+
+          <a routerLink="/hospitals">
+            Hospitals
+          </a>
+
+          <span aria-hidden="true">
+            /
+          </span>
+
+          <span>
+            {{ hospital.name }}
+          </span>
+        </nav>
+
+
+        <!-- HOSPITAL TITLE -->
+
+        <div class="title-row">
+          <div
+            class="hospital-mark"
+            aria-hidden="true"
+          >
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M4 20V8l8-5 8 5v12M9 20v-5h6v5M12 7v5M9.5 9.5h5"
+              />
+            </svg>
+          </div>
+
+          <div>
+            <span class="eyebrow">
+              {{ hospital.accreditation }}
+              profile
+            </span>
+
+            <h1>
+              {{ hospital.name }}
+            </h1>
+
+            <p>
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  d="M12 21s7-5.2 7-12a7 7 0 1 0-14 0c0 6.8 7 12 7 12Z"
+                />
+
+                <circle
+                  cx="12"
+                  cy="9"
+                  r="2.4"
+                />
+              </svg>
+
+              {{ hospital.city }},
+              {{ hospital.state }}
+            </p>
+          </div>
+        </div>
+
+
+        <!-- RATING -->
+
+        <div class="hero-rating">
+          <strong>
+            <span aria-hidden="true">
+              ★
+            </span>
+
+            {{ hospital.rating }}
+          </strong>
+
+          <small>
+            {{ hospital.reviews }}
+            directory reviews
+          </small>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- =====================================
+         DETAILS CONTENT
+    ====================================== -->
+
+    <section class="details-layout">
+      <div class="details-main">
+
+        <!-- HOSPITAL OVERVIEW -->
+
+        <article
+          class="details-card overview-card"
+        >
+          <header>
+            <span>
+              Hospital overview
+            </span>
+
+            <h2>
+              Essential information at a glance
+            </h2>
+          </header>
+
+          <div class="info-grid">
+
+            <!-- FACILITY TYPE -->
+
+            <div>
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  d="M4 20V8l8-5 8 5v12M9 20v-5h6v5"
+                />
+              </svg>
+
+              <span>
+                <small>
+                  Facility type
+                </small>
+
+                <strong>
+                  {{ hospital.type }}
+                </strong>
+              </span>
+            </div>
+
+
+            <!-- BED CAPACITY -->
+
+            <div>
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  d="M4 5h16v14H4zM8 9h3v3H8zM14 9h2M14 13h2M8 16h8"
+                />
+              </svg>
+
+              <span>
+                <small>
+                  Bed capacity
+                </small>
+
+                <strong>
+                  {{ hospital.beds }}
+                  beds
+                </strong>
+              </span>
+            </div>
+
+
+            <!-- ACCREDITATION -->
+
+            <div>
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  d="M12 3 5 6v5c0 4.5 2.8 8.2 7 10 4.2-1.8 7-5.5 7-10V6l-7-3Z"
+                />
+
+                <path
+                  d="m9 12 2 2 4-4"
+                />
+              </svg>
+
+              <span>
+                <small>
+                  Accreditation
+                </small>
+
+                <strong>
+                  {{ hospital.accreditation }}
+                </strong>
+              </span>
+            </div>
+
+
+            <!-- OPERATING HOURS -->
+
+            <div>
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="9"
+                />
+
+                <path
+                  d="M12 7v5l3 2"
+                />
+              </svg>
+
+              <span>
+                <small>
+                  Operating hours
+                </small>
+
+                <strong>
+                  {{
+                    hospital.open24x7
+                      ? 'Open 24×7'
+                      : 'Standard hours'
+                  }}
+                </strong>
+              </span>
+            </div>
+          </div>
+        </article>
+
+
+        <!-- =====================================
+             SPECIALTIES
+        ====================================== -->
+
+        <article class="details-card">
+          <header>
+            <span>
+              Clinical services
+            </span>
+
+            <h2>
+              Featured specialties
+            </h2>
+
+            <p>
+              Use these listed specialties
+              to compare the hospital with
+              your care needs.
+            </p>
+          </header>
+
+          <div class="specialty-grid">
+            @for (
+              specialty of hospital.specialties;
+              track specialty;
+              let index = $index
+            ) {
+              <div>
+                <b aria-hidden="true">
+                  {{
+                    index + 1 < 10
+                      ? '0' + (index + 1)
+                      : index + 1
+                  }}
+                </b>
+
+                <span>
+                  {{ specialty }}
+                </span>
+              </div>
+            }
+          </div>
+        </article>
+
+
+        <!-- =====================================
+             INSURANCE
+        ====================================== -->
+
+        <article class="details-card">
+          <header>
+            <span>
+              Insurance information
+            </span>
+
+            <h2>
+              Listed insurance providers
+            </h2>
+
+            <p>
+              Coverage can vary by plan,
+              procedure and authorization status.
+            </p>
+          </header>
+
+          <div class="insurance-list">
+            @for (
+              insurance of hospital.insurance;
+              track insurance
+            ) {
+              <span>
+                <svg
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="m5 12 4 4L19 6"
+                  />
+                </svg>
+
+                {{ insurance }}
+              </span>
+            }
+          </div>
+
+          <div class="verification-note">
+            <strong>
+              Before admission
+            </strong>
+
+            <p>
+              Call the hospital insurance desk
+              and your insurer to confirm active
+              cashless eligibility for your
+              exact policy.
+            </p>
+          </div>
+        </article>
+
+
+        <!-- =====================================
+             LOCATION MAP
+        ====================================== -->
+
+        <article
+          class="details-card location-card"
+        >
+          <header>
+            <span>
+              Location
+            </span>
+
+            <h2>
+              {{ hospital.city }},
+              {{ hospital.state }}
+            </h2>
+
+            <p>
+              Map coordinates:
+              {{ hospital.latitude }},
+              {{ hospital.longitude }}
+            </p>
+          </header>
+
+          <div class="map-frame">
+            <app-map
+              [latitude]="hospital.latitude"
+              [longitude]="hospital.longitude"
+            >
+            </app-map>
+          </div>
+        </article>
+      </div>
+
+
+      <!-- =====================================
+           SIDEBAR
+      ====================================== -->
+
+      <aside class="details-sidebar">
+        <div class="sidebar-card">
+          <span class="sidebar-label">
+            Care availability
+          </span>
+
+          <h2>
+            Plan your next step
+          </h2>
+
+
+          <!-- EMERGENCY -->
+
+          <div class="availability-row">
+            <span>
+              <i
+                class="status-dot"
+                [class.unavailable]="
+                  !hospital.emergency
+                "
+              >
+              </i>
+
+              Emergency department
+            </span>
+
+            <strong>
+              {{
+                hospital.emergency
+                  ? 'Listed'
+                  : 'Not listed'
+              }}
+            </strong>
+          </div>
+
+
+          <!-- OPEN 24×7 -->
+
+          <div class="availability-row">
+            <span>
+              <i
+                class="status-dot"
+                [class.unavailable]="
+                  !hospital.open24x7
+                "
+              >
+              </i>
+
+              24×7 operations
+            </span>
+
+            <strong>
+              {{
+                hospital.open24x7
+                  ? 'Listed'
+                  : 'Not listed'
+              }}
+            </strong>
+          </div>
+
+
+          <!-- =====================================
+               DOWNLOAD PDF BUTTON
+          ====================================== -->
+
+          <button
+            type="button"
+            class="download-pdf-button"
+            (click)="downloadProfilePdf()"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                d="M12 3v12"
+              />
+
+              <path
+                d="m7 10 5 5 5-5"
+              />
+
+              <path
+                d="M5 20h14"
+              />
+            </svg>
+
+            Download Profile PDF
+          </button>
+
+
+          <!-- DIRECTIONS -->
+
+          <a
+            class="directions-button"
+            [href]="
+              'https://www.google.com/maps/dir/?api=1&destination=' +
+              hospital.latitude +
+              ',' +
+              hospital.longitude
+            "
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Get directions
+
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                d="m9 18 6-6-6-6"
+              />
+            </svg>
+          </a>
+
+
+          <!-- BACK BUTTON -->
+
+          <a
+            class="back-button"
+            routerLink="/hospitals"
+          >
+            Back to search
+          </a>
+        </div>
+
+
+        <!-- DISCLAIMER -->
+
+        <div class="data-note">
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <circle
+              cx="12"
+              cy="12"
+              r="9"
+            />
+
+            <path
+              d="M12 11v5M12 8h.01"
+            />
+          </svg>
+
+          <p>
+            <strong>
+              Demonstration profile
+            </strong>
+
+            This project directory is not
+            a live insurer database.
+            Verify every detail before making
+            a healthcare decision.
+          </p>
+        </div>
+      </aside>
+    </section>
+
+  } @else {
+
+    <!-- =====================================
+         ERROR STATE
+    ====================================== -->
+
+    <section class="not-found">
+      <div aria-hidden="true">
+        !
+      </div>
+
+      <h1>
+        Hospital profile could not be loaded
+      </h1>
+
+      <p>
+        {{
+          loadError ||
+          'The hospital profile may have moved or the link may be incorrect.'
+        }}
+      </p>
+
+      <div class="error-actions">
+        <button
+          type="button"
+          class="retry-button"
+          (click)="retryLoading()"
+        >
+          Try again
+        </button>
+
+        <a routerLink="/hospitals">
+          Return to hospital search
+        </a>
+      </div>
+    </section>
+  }
+
+</main>

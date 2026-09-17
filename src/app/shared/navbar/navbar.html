@@ -1,0 +1,297 @@
+<header class="site-header">
+  <nav
+    class="navbar"
+    aria-label="Main navigation"
+  >
+    <!-- ============================== -->
+    <!-- LOGO -->
+    <!-- ============================== -->
+
+    <a
+      class="logo"
+      routerLink="/"
+      (click)="closeMenu()"
+      aria-label="CareFinder home"
+    >
+      <span
+        class="logo-icon"
+        aria-hidden="true"
+      >
+        <i></i>
+        <b></b>
+      </span>
+
+      <span class="logo-text">
+        <span>
+          <strong>Care</strong>Finder
+        </span>
+
+        <small>
+          Insurance hospital network
+        </small>
+      </span>
+    </a>
+
+
+    <!-- ============================== -->
+    <!-- MOBILE MENU BUTTON -->
+    <!-- ============================== -->
+
+    <button
+      class="menu-button"
+      type="button"
+      (click)="toggleMenu()"
+      [attr.aria-expanded]="menuOpen()"
+      aria-controls="main-menu"
+      aria-label="Toggle navigation"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+
+    <!-- ============================== -->
+    <!-- NAVIGATION LINKS -->
+    <!-- ============================== -->
+
+    <div
+      class="nav-links"
+      id="main-menu"
+      [class.open]="menuOpen()"
+    >
+      <!-- HOME -->
+
+      <a
+        routerLink="/"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{
+          exact: true
+        }"
+        (click)="closeMenu()"
+      >
+        Home
+      </a>
+
+
+      <!-- HOSPITAL DIRECTORY -->
+
+      <a
+        routerLink="/hospitals"
+        routerLinkActive="active"
+        (click)="closeMenu()"
+      >
+        Hospital Directory
+      </a>
+      <a
+  routerLink="/emergency"
+  routerLinkActive="active"
+  (click)="closeMenu()"
+>
+  Emergency
+</a>
+
+
+      <!-- SAVED HOSPITALS -->
+
+      <a
+        routerLink="/favorites"
+        routerLinkActive="active"
+        (click)="closeMenu()"
+      >
+        Saved Hospitals
+      </a>
+      
+      <a
+  routerLink="/recently-viewed"
+  routerLinkActive="active"
+  (click)="closeMenu()"
+>
+  Recently Viewed
+</a>
+
+
+      <!-- INSURANCE -->
+
+      <a
+        routerLink="/insurance"
+        routerLinkActive="active"
+        (click)="closeMenu()"
+      >
+        Insurance
+      </a>
+
+
+      <!-- HOW IT WORKS -->
+
+      <a
+        routerLink="/how-it-works"
+        routerLinkActive="active"
+        (click)="closeMenu()"
+      >
+        How It Works
+      </a>
+
+
+      <!-- ABOUT -->
+
+      <a
+        routerLink="/about"
+        routerLinkActive="active"
+        (click)="closeMenu()"
+      >
+        About
+      </a>
+
+
+      <!-- ============================== -->
+      <!-- MOBILE LOGIN / LOGOUT -->
+      <!-- ============================== -->
+
+      <div class="mobile-auth">
+        @if (auth.currentUser(); as user) {
+          <!-- MOBILE PROFILE -->
+
+          <a
+            class="mobile-profile"
+            routerLink="/profile"
+            (click)="closeMenu()"
+          >
+            <span>
+              {{
+                user.name
+                  .charAt(0)
+                  .toUpperCase()
+              }}
+            </span>
+
+            <div>
+              <strong>
+                {{ user.name }}
+              </strong>
+
+              <small>
+                View profile
+              </small>
+            </div>
+          </a>
+
+
+          <!-- MOBILE LOGOUT -->
+
+          <button
+            class="mobile-logout"
+            type="button"
+            (click)="logout()"
+          >
+            Logout
+          </button>
+        } @else {
+          <!-- MOBILE SIGN IN -->
+
+          <a
+            routerLink="/login"
+            (click)="closeMenu()"
+          >
+            Sign in
+          </a>
+
+
+          <!-- MOBILE REGISTER -->
+
+          <a
+            class="mobile-create"
+            routerLink="/register"
+            (click)="closeMenu()"
+          >
+            Create account
+          </a>
+        }
+      </div>
+    </div>
+
+
+    <!-- ============================== -->
+    <!-- DESKTOP PROFILE / LOGOUT -->
+    <!-- ============================== -->
+
+    <div class="nav-actions">
+      @if (auth.currentUser(); as user) {
+        <!-- PROFILE BUTTON -->
+
+        <a
+          class="profile-button"
+          routerLink="/profile"
+          routerLinkActive="active-profile"
+          [attr.title]="user.email"
+        >
+          <span class="profile-avatar">
+            {{
+              user.name
+                .charAt(0)
+                .toUpperCase()
+            }}
+          </span>
+
+          <span class="profile-copy">
+            <strong>
+              {{ user.name }}
+            </strong>
+
+            <small>
+              My profile
+            </small>
+          </span>
+
+          <b aria-hidden="true">
+            ›
+          </b>
+        </a>
+
+
+        <!-- LOGOUT BUTTON -->
+
+        <button
+          class="logout-button"
+          type="button"
+          (click)="logout()"
+          aria-label="Logout from CareFinder"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              d="M10 5H5v14h5M14 16l4-4-4-4M18 12H9"
+            />
+          </svg>
+
+          Logout
+        </button>
+      } @else {
+        <!-- LOGIN BUTTON -->
+
+        <a
+          class="login-button"
+          routerLink="/login"
+        >
+          Sign in
+        </a>
+
+
+        <!-- REGISTER BUTTON -->
+
+        <a
+          class="register-button"
+          routerLink="/register"
+        >
+          Create account
+
+          <span aria-hidden="true">
+            →
+          </span>
+        </a>
+      }
+    </div>
+  </nav>
+</header>

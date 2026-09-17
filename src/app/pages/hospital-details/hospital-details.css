@@ -1,0 +1,1139 @@
+:host {
+  display: block;
+}
+
+
+/* =========================================
+   PAGE
+========================================= */
+
+.details-page {
+  min-height: 100vh;
+
+  color: #17364a;
+
+  background: #f4f8fa;
+}
+
+
+/* =========================================
+   LOADING STATE
+========================================= */
+
+.details-loading {
+  min-height: 70vh;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 50px 20px;
+
+  text-align: center;
+}
+
+.loading-spinner {
+  width: 54px;
+
+  height: 54px;
+
+  margin-bottom: 22px;
+
+  border: 5px solid #d8ecec;
+
+  border-top-color: #078d8d;
+
+  border-radius: 50%;
+
+  animation:
+    hospital-loading
+    0.8s
+    linear
+    infinite;
+}
+
+.details-loading h1 {
+  margin: 0;
+
+  color: #12364a;
+
+  font-size: 30px;
+
+  letter-spacing: -0.03em;
+}
+
+.details-loading p {
+  margin: 10px 0 0;
+
+  color: #738994;
+
+  font-size: 15px;
+}
+
+@keyframes hospital-loading {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =========================================
+   HERO SECTION
+========================================= */
+
+.details-hero {
+  padding:
+    44px
+    24px
+    90px;
+
+  background:
+    radial-gradient(
+      circle at 85% 10%,
+      rgba(53, 204, 188, 0.16),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #071e30,
+      #0a3c4c
+    );
+}
+
+.hero-inner {
+  position: relative;
+
+  max-width: 1130px;
+
+  margin: auto;
+}
+
+
+/* =========================================
+   BREADCRUMB
+========================================= */
+
+.breadcrumb {
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  overflow: hidden;
+
+  margin-bottom: 30px;
+
+  color: #7fa0ad;
+
+  font-size: 12px;
+
+  white-space: nowrap;
+}
+
+.breadcrumb a {
+  color: #b7ccd4;
+
+  text-decoration: none;
+
+  transition: color 0.2s ease;
+}
+
+.breadcrumb a:hover {
+  color: #65ded2;
+}
+
+.breadcrumb span:last-child {
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+
+/* =========================================
+   HOSPITAL TITLE
+========================================= */
+
+.title-row {
+  display: flex;
+
+  align-items: center;
+
+  gap: 20px;
+
+  padding-right: 200px;
+}
+
+.hospital-mark {
+  width: 72px;
+
+  height: 72px;
+
+  display: grid;
+
+  place-items: center;
+
+  flex: 0 0 72px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.16);
+
+  border-radius: 20px;
+
+  background:
+    rgba(255, 255, 255, 0.09);
+
+  box-shadow:
+    inset 0 1px 0
+    rgba(255, 255, 255, 0.08);
+}
+
+.hospital-mark svg {
+  width: 35px;
+
+  height: 35px;
+
+  fill: none;
+
+  stroke: #61d8cd;
+
+  stroke-width: 1.7;
+
+  stroke-linecap: round;
+
+  stroke-linejoin: round;
+}
+
+.eyebrow,
+.details-card header > span,
+.sidebar-label {
+  color: #55d5c9;
+
+  font-size: 11px;
+
+  font-weight: 850;
+
+  letter-spacing: 0.12em;
+
+  text-transform: uppercase;
+}
+
+.title-row h1 {
+  max-width: 790px;
+
+  margin: 8px 0;
+
+  color: #ffffff;
+
+  font-size:
+    clamp(
+      34px,
+      5vw,
+      52px
+    );
+
+  line-height: 1.08;
+
+  letter-spacing: -0.045em;
+}
+
+.title-row p {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  margin: 0;
+
+  color: #aec3cb;
+
+  font-size: 14px;
+}
+
+.title-row p svg {
+  width: 16px;
+
+  height: 16px;
+
+  fill: none;
+
+  stroke: #55d5c9;
+
+  stroke-width: 1.8;
+}
+
+
+/* =========================================
+   HERO RATING
+========================================= */
+
+.hero-rating {
+  position: absolute;
+
+  right: 0;
+
+  bottom: 7px;
+
+  display: grid;
+
+  justify-items: end;
+}
+
+.hero-rating strong {
+  color: #ffffff;
+
+  font-size: 24px;
+}
+
+.hero-rating strong span {
+  color: #f4b229;
+}
+
+.hero-rating small {
+  margin-top: 5px;
+
+  color: #8eabb6;
+
+  font-size: 11px;
+}
+
+
+/* =========================================
+   MAIN LAYOUT
+========================================= */
+
+.details-layout {
+  position: relative;
+
+  z-index: 2;
+
+  max-width: 1130px;
+
+  margin: -44px auto 0;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    320px;
+
+  align-items: start;
+
+  gap: 22px;
+
+  padding:
+    0
+    24px
+    80px;
+}
+
+.details-main {
+  display: grid;
+
+  gap: 18px;
+}
+
+
+/* =========================================
+   CARDS
+========================================= */
+
+.details-card,
+.sidebar-card {
+  padding: 27px;
+
+  border: 1px solid #dce7ea;
+
+  border-radius: 18px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 10px 32px
+    rgba(18, 55, 73, 0.06);
+}
+
+.details-card header {
+  margin-bottom: 22px;
+}
+
+.details-card header > span,
+.sidebar-label {
+  color: #078b8b;
+}
+
+.details-card h2,
+.sidebar-card h2 {
+  margin: 7px 0 0;
+
+  color: #17364a;
+
+  font-size: 23px;
+
+  letter-spacing: -0.025em;
+}
+
+.details-card header p {
+  margin: 8px 0 0;
+
+  color: #758a95;
+
+  font-size: 13px;
+
+  line-height: 1.65;
+}
+
+
+/* =========================================
+   INFORMATION GRID
+========================================= */
+
+.info-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, 1fr);
+
+  gap: 12px;
+}
+
+.info-grid > div {
+  display: flex;
+
+  align-items: center;
+
+  gap: 13px;
+
+  min-height: 75px;
+
+  padding: 15px;
+
+  border: 1px solid #e0e9eb;
+
+  border-radius: 13px;
+
+  background: #f8fafb;
+}
+
+.info-grid svg {
+  width: 25px;
+
+  height: 25px;
+
+  flex: 0 0 25px;
+
+  fill: none;
+
+  stroke: #07888a;
+
+  stroke-width: 1.7;
+
+  stroke-linecap: round;
+
+  stroke-linejoin: round;
+}
+
+.info-grid span {
+  display: grid;
+}
+
+.info-grid small {
+  color: #80929b;
+
+  font-size: 11px;
+}
+
+.info-grid strong {
+  margin-top: 4px;
+
+  color: #274a5a;
+
+  font-size: 13px;
+}
+
+
+/* =========================================
+   SPECIALTIES
+========================================= */
+
+.specialty-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 10px;
+}
+
+.specialty-grid > div {
+  min-height: 54px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 11px;
+
+  padding: 15px;
+
+  border: 1px solid #dfe8ea;
+
+  border-radius: 11px;
+
+  background: #ffffff;
+}
+
+.specialty-grid b {
+  color: #98aeb6;
+
+  font-size: 11px;
+}
+
+.specialty-grid span {
+  color: #315564;
+
+  font-size: 12px;
+
+  font-weight: 800;
+}
+
+
+/* =========================================
+   INSURANCE
+========================================= */
+
+.insurance-list {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 9px;
+}
+
+.insurance-list > span {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  padding: 9px 12px;
+
+  border: 1px solid #cfe5e2;
+
+  border-radius: 9px;
+
+  background: #eef8f6;
+
+  color: #176f70;
+
+  font-size: 11px;
+
+  font-weight: 800;
+}
+
+.insurance-list svg {
+  width: 14px;
+
+  height: 14px;
+
+  fill: none;
+
+  stroke: currentColor;
+
+  stroke-width: 2;
+}
+
+.verification-note {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 18px;
+
+  margin-top: 20px;
+
+  padding: 15px;
+
+  border-left: 4px solid #e1a32b;
+
+  border-radius: 0 9px 9px 0;
+
+  background: #fff8e9;
+}
+
+.verification-note strong {
+  flex: 0 0 auto;
+
+  color: #805e18;
+
+  font-size: 11px;
+}
+
+.verification-note p {
+  margin: 0;
+
+  color: #7b6d4e;
+
+  font-size: 11px;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================
+   MAP
+========================================= */
+
+.location-card {
+  overflow: hidden;
+}
+
+.map-frame {
+  overflow: hidden;
+
+  min-height: 320px;
+
+  border: 1px solid #dce6e8;
+
+  border-radius: 13px;
+}
+
+.map-frame app-map {
+  display: block;
+
+  min-height: 320px;
+}
+
+
+/* =========================================
+   SIDEBAR
+========================================= */
+
+.details-sidebar {
+  position: sticky;
+
+  top: 96px;
+
+  display: grid;
+
+  gap: 14px;
+}
+
+.sidebar-card {
+  padding: 24px;
+}
+
+.sidebar-card h2 {
+  margin-bottom: 14px;
+}
+
+.availability-row {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 12px;
+
+  padding: 14px 0;
+
+  border-bottom: 1px solid #e8eef0;
+
+  color: #617985;
+
+  font-size: 12px;
+}
+
+.availability-row > span {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+}
+
+.availability-row strong {
+  color: #244b5a;
+
+  font-size: 11px;
+}
+
+.status-dot {
+  width: 8px;
+
+  height: 8px;
+
+  flex: 0 0 8px;
+
+  border-radius: 50%;
+
+  background: #14a789;
+
+  box-shadow:
+    0 0 0 4px
+    rgba(20, 167, 137, 0.1);
+}
+
+.status-dot.unavailable {
+  background: #b1bdc2;
+
+  box-shadow: none;
+}
+
+
+/* =========================================
+   SIDEBAR BUTTONS
+========================================= */
+
+.download-pdf-button,
+.directions-button,
+.back-button {
+  width: 100%;
+
+  min-height: 44px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  border-radius: 10px;
+
+  font-size: 12px;
+
+  font-weight: 850;
+
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+
+/* PDF BUTTON */
+
+.download-pdf-button {
+  margin-top: 18px;
+
+  border: 0;
+
+  background:
+    linear-gradient(
+      135deg,
+      #078d8d,
+      #12aaa4
+    );
+
+  color: #ffffff;
+
+  box-shadow:
+    0 10px 22px
+    rgba(7, 141, 141, 0.22);
+}
+
+.download-pdf-button:hover {
+  transform: translateY(-1px);
+
+  background:
+    linear-gradient(
+      135deg,
+      #067c7d,
+      #0d9692
+    );
+}
+
+
+/* DIRECTIONS BUTTON */
+
+.directions-button {
+  margin-top: 9px;
+
+  border: 1px solid #a9d9d7;
+
+  background: #eef9f8;
+
+  color: #087d7e;
+}
+
+.directions-button:hover {
+  transform: translateY(-1px);
+
+  border-color: #078d8d;
+
+  background: #e2f5f3;
+}
+
+
+/* BACK BUTTON */
+
+.back-button {
+  margin-top: 9px;
+
+  border: 1px solid #d5e2e5;
+
+  background: #ffffff;
+
+  color: #516e7b;
+}
+
+.back-button:hover {
+  border-color: #9fb8c1;
+
+  background: #f7fafb;
+}
+
+
+/* BUTTON ICONS */
+
+.download-pdf-button svg,
+.directions-button svg {
+  width: 17px;
+
+  height: 17px;
+
+  fill: none;
+
+  stroke: currentColor;
+
+  stroke-width: 2;
+
+  stroke-linecap: round;
+
+  stroke-linejoin: round;
+}
+
+
+/* =========================================
+   DATA NOTE
+========================================= */
+
+.data-note {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 10px;
+
+  padding: 16px;
+
+  border: 1px solid #dce7e9;
+
+  border-radius: 13px;
+
+  background: #ffffff;
+}
+
+.data-note svg {
+  width: 19px;
+
+  height: 19px;
+
+  flex: 0 0 19px;
+
+  fill: none;
+
+  stroke: #708a96;
+
+  stroke-width: 1.7;
+}
+
+.data-note p {
+  display: grid;
+
+  gap: 4px;
+
+  margin: 0;
+
+  color: #7d8f98;
+
+  font-size: 11px;
+
+  line-height: 1.55;
+}
+
+.data-note strong {
+  color: #385866;
+
+  font-size: 12px;
+}
+
+
+/* =========================================
+   ERROR STATE
+========================================= */
+
+.not-found {
+  max-width: 680px;
+
+  min-height: 65vh;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  margin: auto;
+
+  padding: 65px 24px;
+
+  text-align: center;
+}
+
+.not-found > div {
+  width: 72px;
+
+  height: 72px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 20px;
+
+  background: #e5f4f3;
+
+  color: #078d8d;
+
+  font-size: 38px;
+
+  font-weight: 900;
+}
+
+.not-found h1 {
+  margin: 20px 0 7px;
+
+  color: #17364a;
+}
+
+.not-found p {
+  max-width: 500px;
+
+  margin: 0;
+
+  color: #7c8f98;
+
+  line-height: 1.6;
+}
+
+.error-actions {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  margin-top: 22px;
+}
+
+.retry-button,
+.error-actions a {
+  min-height: 42px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 10px 17px;
+
+  border-radius: 9px;
+
+  font-size: 12px;
+
+  font-weight: 800;
+
+  text-decoration: none;
+
+  cursor: pointer;
+}
+
+.retry-button {
+  border: 0;
+
+  background: #078d8d;
+
+  color: #ffffff;
+}
+
+.error-actions a {
+  border: 1px solid #cfe0e2;
+
+  color: #087f81;
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 850px) {
+  .details-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .details-sidebar {
+    position: static;
+  }
+
+  .title-row {
+    padding-right: 0;
+  }
+
+  .hero-rating {
+    position: static;
+
+    justify-items: start;
+
+    margin-top: 22px;
+  }
+
+  .specialty-grid {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 560px) {
+  .details-hero {
+    padding:
+      34px
+      16px
+      74px;
+  }
+
+  .title-row {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .hospital-mark {
+    width: 62px;
+
+    height: 62px;
+
+    flex-basis: 62px;
+  }
+
+  .title-row h1 {
+    font-size: 34px;
+  }
+
+  .details-layout {
+    padding:
+      0
+      14px
+      60px;
+  }
+
+  .details-card,
+  .sidebar-card {
+    padding: 20px;
+  }
+
+  .info-grid,
+  .specialty-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .verification-note {
+    flex-direction: column;
+
+    gap: 6px;
+  }
+
+  .map-frame,
+  .map-frame app-map {
+    min-height: 260px;
+  }
+}
+
+
+/* =========================================
+   PRINT / SAVE AS PDF
+========================================= */
+
+@media print {
+  .download-pdf-button,
+  .directions-button,
+  .back-button {
+    display: none !important;
+  }
+
+  .details-page {
+    min-height: auto;
+
+    background: #ffffff;
+  }
+
+  .details-hero {
+    padding:
+      25px
+      20px
+      45px;
+
+    print-color-adjust: exact;
+
+    -webkit-print-color-adjust: exact;
+  }
+
+  .details-layout {
+    max-width: none;
+
+    margin: 0;
+
+    display: block;
+
+    padding: 20px;
+  }
+
+  .details-main {
+    display: block;
+  }
+
+  .details-card,
+  .sidebar-card,
+  .data-note {
+    margin-bottom: 14px;
+
+    break-inside: avoid;
+
+    box-shadow: none;
+  }
+
+  .details-sidebar {
+    position: static;
+  }
+
+  .map-frame {
+    min-height: 220px;
+  }
+}

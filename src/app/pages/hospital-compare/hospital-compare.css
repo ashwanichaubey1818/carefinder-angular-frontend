@@ -1,0 +1,938 @@
+:host {
+  display: block;
+
+  --navy-dark: #062536;
+  --navy: #0a4052;
+  --teal: #078d8d;
+  --teal-light: #20b8aa;
+  --green: #0b8b68;
+  --text: #17364a;
+  --muted: #6f858f;
+  --border: #dbe7ea;
+  --background: #f3f7f9;
+
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--text);
+
+  font-family:
+    Inter,
+    "Segoe UI",
+    Arial,
+    sans-serif;
+}
+
+
+/* =====================================
+   PAGE
+===================================== */
+
+.compare-page {
+  max-width: 1280px;
+  min-height: 100vh;
+
+  margin: 0 auto;
+  padding: 42px 24px 90px;
+}
+
+
+/* =====================================
+   PROFESSIONAL HERO
+===================================== */
+
+.compare-hero {
+  position: relative;
+  overflow: hidden;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 35px;
+
+  margin-bottom: 26px;
+  padding: 42px 40px;
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.1);
+  border-radius: 27px;
+
+  background:
+    radial-gradient(
+      circle at 85% 10%,
+      rgba(44, 211, 191, 0.22),
+      transparent 32%
+    ),
+    linear-gradient(
+      135deg,
+      #061e2f 0%,
+      #0a4052 58%,
+      #08776f 100%
+    );
+
+  box-shadow:
+    0 24px 55px
+    rgba(6, 45, 60, 0.18);
+}
+
+.compare-hero::before {
+  content: "";
+
+  position: absolute;
+  right: -80px;
+  bottom: -150px;
+
+  width: 330px;
+  height: 330px;
+
+  border: 55px solid
+    rgba(255, 255, 255, 0.045);
+  border-radius: 50%;
+}
+
+.compare-hero::after {
+  content: "⚖";
+
+  position: absolute;
+  right: 55px;
+  top: 25px;
+
+  color:
+    rgba(255, 255, 255, 0.07);
+
+  font-size: 125px;
+  line-height: 1;
+}
+
+.compare-hero > * {
+  position: relative;
+  z-index: 2;
+}
+
+.page-badge {
+  display: inline-flex;
+  align-items: center;
+
+  margin-bottom: 14px;
+  padding: 7px 12px;
+
+  border: 1px solid
+    rgba(88, 234, 215, 0.3);
+  border-radius: 20px;
+
+  background:
+    rgba(36, 194, 178, 0.13);
+
+  color: #6be4d7;
+
+  font-size: 10px;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.compare-hero h1 {
+  margin: 0 0 12px;
+  color: white;
+
+  font-size: clamp(
+    34px,
+    5vw,
+    52px
+  );
+
+  line-height: 1.08;
+  letter-spacing: -0.045em;
+}
+
+.compare-hero p {
+  max-width: 720px;
+  margin: 0;
+
+  color:
+    rgba(224, 241, 245, 0.76);
+
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.clear-button {
+  flex-shrink: 0;
+
+  padding: 11px 16px;
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.25);
+  border-radius: 11px;
+
+  background:
+    rgba(255, 255, 255, 0.1);
+
+  color: white;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 750;
+
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+
+  transition: 0.2s ease;
+}
+
+.clear-button:hover {
+  border-color:
+    rgba(255, 255, 255, 0.45);
+
+  background:
+    rgba(255, 255, 255, 0.18);
+
+  transform: translateY(-1px);
+}
+
+
+/* =====================================
+   EMPTY STATE
+===================================== */
+
+.empty-state {
+  max-width: 600px;
+
+  margin: 60px auto;
+  padding: 55px 35px;
+
+  border: 1px solid var(--border);
+  border-radius: 25px;
+
+  background:
+    radial-gradient(
+      circle at top,
+      rgba(21, 169, 158, 0.1),
+      transparent 190px
+    ),
+    white;
+
+  text-align: center;
+
+  box-shadow:
+    0 18px 50px
+    rgba(15, 61, 78, 0.08);
+}
+
+.empty-icon {
+  display: grid;
+  place-items: center;
+
+  width: 74px;
+  height: 74px;
+
+  margin: 0 auto 19px;
+
+  border-radius: 22px;
+
+  background: linear-gradient(
+    135deg,
+    #e1f6f3,
+    #edf6f8
+  );
+
+  font-size: 35px;
+
+  box-shadow:
+    0 10px 25px
+    rgba(7, 141, 141, 0.12);
+}
+
+.empty-state h2 {
+  margin: 0 0 10px;
+
+  color: #113b4d;
+  font-size: 25px;
+}
+
+.empty-state p {
+  max-width: 440px;
+  margin: 0 auto 24px;
+
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.primary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 12px 21px;
+
+  border-radius: 11px;
+
+  background: linear-gradient(
+    135deg,
+    var(--teal),
+    var(--teal-light)
+  );
+
+  color: white;
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+
+  box-shadow:
+    0 10px 22px
+    rgba(7, 141, 141, 0.22);
+
+  transition: 0.2s ease;
+}
+
+.primary-button:hover {
+  transform: translateY(-2px);
+}
+
+
+/* =====================================
+   SELECTION MESSAGE
+===================================== */
+
+.selection-message {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  margin-bottom: 15px;
+  padding: 13px 16px;
+
+  border: 1px solid #efd994;
+  border-radius: 12px;
+
+  background: #fff9e8;
+  color: #795c12;
+
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.selection-message::before {
+  content: "!";
+
+  display: grid;
+  place-items: center;
+
+  width: 21px;
+  height: 21px;
+
+  border-radius: 50%;
+  background: #e7b938;
+  color: white;
+
+  font-size: 12px;
+  font-weight: 900;
+}
+
+
+/* =====================================
+   SELECTION SUMMARY
+===================================== */
+
+.selected-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+
+  margin-bottom: 15px;
+  padding: 12px 16px;
+
+  border: 1px solid var(--border);
+  border-radius: 12px;
+
+  background: white;
+  color: var(--muted);
+
+  font-size: 12px;
+}
+
+.selected-summary strong {
+  color: var(--teal);
+  font-size: 16px;
+}
+
+.selected-summary a {
+  color: var(--teal);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.selected-summary a:hover {
+  text-decoration: underline;
+}
+
+
+/* =====================================
+   COMPARISON TABLE WRAPPER
+===================================== */
+
+.comparison-wrapper {
+  position: relative;
+  overflow-x: auto;
+
+  border: 1px solid #d6e4e8;
+  border-radius: 22px;
+
+  background: white;
+
+  box-shadow:
+    0 20px 55px
+    rgba(14, 59, 76, 0.1);
+
+  scrollbar-color:
+    #8fc8c7 #edf4f5;
+  scrollbar-width: thin;
+}
+
+.comparison-wrapper::-webkit-scrollbar {
+  height: 8px;
+}
+
+.comparison-wrapper::-webkit-scrollbar-track {
+  background: #edf4f5;
+}
+
+.comparison-wrapper::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: #8fc8c7;
+}
+
+
+/* =====================================
+   COMPARISON TABLE
+===================================== */
+
+.comparison-table {
+  width: 100%;
+  min-width: 900px;
+
+  border-spacing: 0;
+  border-collapse: separate;
+
+  table-layout: fixed;
+}
+
+.comparison-table th,
+.comparison-table td {
+  padding: 18px;
+
+  border-right: 1px solid #e3ecef;
+  border-bottom: 1px solid #e3ecef;
+
+  vertical-align: middle;
+  text-align: center;
+
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.comparison-table tr:last-child th,
+.comparison-table tr:last-child td {
+  border-bottom: none;
+}
+
+.comparison-table th:last-child,
+.comparison-table td:last-child {
+  border-right: none;
+}
+
+.comparison-table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.comparison-table tbody tr:hover td {
+  background: #f7fbfc;
+}
+
+
+/* =====================================
+   FEATURE COLUMN
+===================================== */
+
+.feature-column,
+.comparison-table tbody th {
+  position: sticky;
+  left: 0;
+  z-index: 4;
+
+  width: 180px;
+
+  background: #f2f7f8;
+  color: #345665;
+
+  text-align: left;
+  font-size: 11px;
+  font-weight: 850;
+  letter-spacing: 0.03em;
+}
+
+.feature-column {
+  z-index: 6;
+
+  color: #1c4b5c;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.comparison-table tbody th::after,
+.feature-column::after {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  right: -8px;
+  bottom: 0;
+
+  width: 8px;
+
+  background: linear-gradient(
+    90deg,
+    rgba(12, 55, 70, 0.08),
+    transparent
+  );
+}
+
+
+/* =====================================
+   HOSPITAL TABLE HEADER
+===================================== */
+
+.hospital-heading {
+  position: relative;
+
+  width: 285px;
+  padding: 27px 20px 23px !important;
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(32, 184, 170, 0.12),
+      transparent 120px
+    ),
+    linear-gradient(
+      180deg,
+      #f1fbfa,
+      #ffffff
+    );
+}
+
+.hospital-icon {
+  display: grid;
+  place-items: center;
+
+  width: 52px;
+  height: 52px;
+
+  margin: 0 auto 12px;
+
+  border: 1px solid #c9e9e5;
+  border-radius: 16px;
+
+  background: linear-gradient(
+    135deg,
+    #dff6f2,
+    #edf6f8
+  );
+
+  font-size: 25px;
+
+  box-shadow:
+    0 9px 22px
+    rgba(7, 141, 141, 0.12);
+}
+
+.hospital-heading h2 {
+  max-width: 240px;
+
+  margin: 0 auto 7px;
+
+  color: #123d4f;
+  font-size: 17px;
+  line-height: 1.4;
+}
+
+.hospital-heading p {
+  margin: 0;
+
+  color: #718892;
+  font-size: 11px;
+}
+
+.remove-button {
+  position: absolute;
+  top: 11px;
+  right: 11px;
+
+  display: grid;
+  place-items: center;
+
+  width: 29px;
+  height: 29px;
+  padding: 0;
+
+  border: 1px solid #f1c5c5;
+  border-radius: 50%;
+
+  background: #fff3f3;
+  color: #be4444;
+
+  font-size: 12px;
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.remove-button:hover {
+  border-color: #dc6a6a;
+  background: #dc5252;
+  color: white;
+  transform: rotate(90deg);
+}
+
+.details-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 14px;
+  padding: 9px 14px;
+
+  border-radius: 9px;
+
+  background: linear-gradient(
+    135deg,
+    var(--teal),
+    #0aa397
+  );
+
+  color: white;
+  font-size: 11px;
+  font-weight: 800;
+  text-decoration: none;
+
+  box-shadow:
+    0 7px 16px
+    rgba(7, 141, 141, 0.18);
+
+  transition: 0.2s ease;
+}
+
+.details-button:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 10px 21px
+    rgba(7, 141, 141, 0.25);
+}
+
+
+/* =====================================
+   TABLE VALUES
+===================================== */
+
+.rating {
+  display: block;
+
+  color: #e49a0b;
+
+  font-size: 18px;
+  font-weight: 850;
+}
+
+.comparison-table small {
+  display: block;
+
+  margin-top: 4px;
+
+  color: #7c9099;
+  font-size: 10px;
+}
+
+.best-value {
+  position: relative;
+
+  background:
+    linear-gradient(
+      135deg,
+      #effbf6,
+      #f7fffb
+    ) !important;
+
+  box-shadow:
+    inset 0 0 0 2px
+    rgba(11, 139, 104, 0.08);
+}
+
+.best-badge {
+  display: inline-flex;
+  align-items: center;
+
+  margin-top: 8px;
+  padding: 4px 8px;
+
+  border-radius: 14px;
+
+  background: #d8f6e7;
+  color: #08734e;
+
+  font-size: 9px;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+
+/* =====================================
+   AVAILABILITY STATUS
+===================================== */
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 6px 10px;
+
+  border-radius: 15px;
+
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.status.available {
+  border: 1px solid #bbe8d0;
+  background: #def8e9;
+  color: #08764b;
+}
+
+.status.unavailable {
+  border: 1px solid #f2cccc;
+  background: #fff0f0;
+  color: #b63f3f;
+}
+
+
+/* =====================================
+   ACCREDITATION
+===================================== */
+
+.accreditation {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 6px 10px;
+
+  border: 1px solid #cfe1f5;
+  border-radius: 8px;
+
+  background: #eaf3fd;
+  color: #2d6398;
+
+  font-size: 10px;
+  font-weight: 850;
+}
+
+
+/* =====================================
+   TAGS
+===================================== */
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 5px;
+}
+
+.tag-list span {
+  padding: 5px 8px;
+
+  border: 1px solid #dde8ea;
+  border-radius: 13px;
+
+  background: #f1f6f7;
+  color: #456773;
+
+  font-size: 9px;
+  font-weight: 650;
+}
+
+.insurance-list span {
+  background: #f5f8fa;
+}
+
+.tag-list .common-insurance {
+  border-color: #b7e5cf;
+  background: #dcf7e9;
+  color: #08744c;
+  font-weight: 800;
+}
+
+
+/* =====================================
+   COMMON INSURANCE CARD
+===================================== */
+
+.common-insurance-card {
+  position: relative;
+  overflow: hidden;
+
+  display: flex;
+  align-items: flex-start;
+  gap: 17px;
+
+  margin-top: 24px;
+  padding: 23px;
+
+  border: 1px solid #b9e2cf;
+  border-radius: 19px;
+
+  background:
+    radial-gradient(
+      circle at 90% 20%,
+      rgba(32, 184, 170, 0.12),
+      transparent 150px
+    ),
+    linear-gradient(
+      135deg,
+      #ecfaf4,
+      #f7fffb
+    );
+
+  box-shadow:
+    0 12px 35px
+    rgba(10, 112, 79, 0.07);
+}
+
+.common-icon {
+  flex-shrink: 0;
+
+  display: grid;
+  place-items: center;
+
+  width: 50px;
+  height: 50px;
+
+  border-radius: 15px;
+
+  background: white;
+  font-size: 25px;
+
+  box-shadow:
+    0 8px 19px
+    rgba(10, 112, 79, 0.1);
+}
+
+.common-insurance-card h3 {
+  margin: 0 0 5px;
+
+  color: #0a6848;
+  font-size: 17px;
+}
+
+.common-insurance-card p {
+  margin: 0 0 11px;
+
+  color: #5e7c70;
+  font-size: 11px;
+}
+
+.common-provider-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.common-provider-list span {
+  padding: 6px 10px;
+
+  border: 1px solid #bee5d2;
+  border-radius: 14px;
+
+  background: white;
+  color: #08744c;
+
+  font-size: 10px;
+  font-weight: 800;
+}
+
+
+/* =====================================
+   RESPONSIVE
+===================================== */
+
+@media (max-width: 800px) {
+  .compare-page {
+    padding: 28px 14px 75px;
+  }
+
+  .compare-hero {
+    align-items: flex-start;
+    flex-direction: column;
+
+    padding: 32px 25px;
+    border-radius: 21px;
+  }
+
+  .compare-hero::after {
+    right: 15px;
+    font-size: 90px;
+  }
+
+  .clear-button {
+    align-self: flex-start;
+  }
+
+  .selected-summary {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .comparison-wrapper {
+    border-radius: 16px;
+  }
+
+  .comparison-table th,
+  .comparison-table td {
+    padding: 14px;
+  }
+
+  .common-insurance-card {
+    padding: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .compare-hero {
+    padding: 28px 20px;
+  }
+
+  .compare-hero h1 {
+    font-size: 32px;
+  }
+
+  .compare-hero p {
+    font-size: 12px;
+  }
+
+  .empty-state {
+    padding: 40px 20px;
+  }
+
+  .feature-column,
+  .comparison-table tbody th {
+    width: 135px;
+  }
+
+  .hospital-heading {
+    width: 230px;
+  }
+
+  .common-insurance-card {
+    flex-direction: column;
+  }
+}

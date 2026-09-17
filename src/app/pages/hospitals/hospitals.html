@@ -1,0 +1,960 @@
+<main class="hospitals-page">
+
+  <!-- =====================================
+       FAVORITE NOTIFICATION
+  ====================================== -->
+
+  @if (favoriteMessage) {
+    <div
+      class="favorite-notification"
+      role="status"
+    >
+      <span aria-hidden="true">
+        ♥
+      </span>
+
+      {{ favoriteMessage }}
+    </div>
+  }
+
+
+  <!-- =====================================
+       DIRECTORY HERO
+  ====================================== -->
+
+  <section
+    class="directory-hero"
+    aria-labelledby="directory-title"
+  >
+    <div class="hero-inner">
+      <div>
+        <nav
+          class="breadcrumb"
+          aria-label="Breadcrumb"
+        >
+          <a routerLink="/">
+            Home
+          </a>
+
+          <span aria-hidden="true">
+            /
+          </span>
+
+          <span>
+            Hospital directory
+          </span>
+        </nav>
+
+        <span class="eyebrow">
+          Nationwide care directory
+        </span>
+
+        <h1 id="directory-title">
+          Find a hospital that fits your cover.
+        </h1>
+
+        <p>
+          Search {{ hospitals.length }}
+          hospital profiles by city, insurer,
+          services and distance.
+        </p>
+      </div>
+
+
+      <!-- DIRECTORY STATISTICS -->
+
+      <div
+        class="hero-stats"
+        aria-label="Directory statistics"
+      >
+        <div>
+          <strong>
+            {{ hospitals.length }}
+          </strong>
+
+          <span>
+            Hospitals
+          </span>
+        </div>
+
+        <div>
+          <strong>
+            {{ stateCount }}
+          </strong>
+
+          <span>
+            States & UTs
+          </span>
+        </div>
+
+        <div>
+          <strong>
+            {{ insuranceProviders.length }}
+          </strong>
+
+          <span>
+            Insurers
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =====================================
+       SEARCH AND FILTERS
+  ====================================== -->
+
+  <section
+    class="search-section"
+    aria-label="Hospital filters"
+  >
+    <div class="search-panel">
+
+      <!-- LOCATION SEARCH -->
+
+      <div class="filter-group location-field">
+        <label for="directory-location">
+          Hospital, city or state
+        </label>
+
+        <div class="input-control">
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <circle
+              cx="11"
+              cy="11"
+              r="7"
+            />
+
+            <path
+              d="m20 20-4-4"
+            />
+          </svg>
+
+          <input
+            id="directory-location"
+            type="search"
+            [(ngModel)]="location"
+            (keyup.enter)="searchHospitals()"
+            placeholder="Try Mumbai or Odisha"
+          />
+        </div>
+      </div>
+
+
+      <!-- INSURANCE FILTER -->
+
+      <div class="filter-group">
+        <label for="directory-insurance">
+          Insurance provider
+        </label>
+
+        <select
+          id="directory-insurance"
+          [(ngModel)]="insurance"
+          (change)="searchHospitals()"
+        >
+          <option value="">
+            All insurance providers
+          </option>
+
+          @for (
+            provider of insuranceProviders;
+            track provider
+          ) {
+            <option [value]="provider">
+              {{ provider }}
+            </option>
+          }
+        </select>
+      </div>
+
+
+      <!-- DISTANCE FILTER -->
+
+      <div class="filter-group distance-field">
+        <label for="directory-distance">
+          GPS radius
+        </label>
+
+        <select
+          id="directory-distance"
+          [(ngModel)]="distance"
+          (change)="searchHospitals()"
+        >
+          <option [ngValue]="5">
+            Within 5 km
+          </option>
+
+          <option [ngValue]="10">
+            Within 10 km
+          </option>
+
+          <option [ngValue]="20">
+            Within 20 km
+          </option>
+
+          <option [ngValue]="50">
+            Within 50 km
+          </option>
+
+          <option [ngValue]="100">
+            Within 100 km
+          </option>
+
+          <option [ngValue]="200">
+            Within 200 km
+          </option>
+        </select>
+      </div>
+
+
+      <!-- SEARCH BUTTON -->
+
+      <button
+        class="search-button"
+        type="button"
+        (click)="searchHospitals()"
+      >
+        Search directory
+
+        <svg
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path
+            d="m9 18 6-6-6-6"
+          />
+        </svg>
+      </button>
+    </div>
+
+
+    <!-- =====================================
+         SERVICE FILTERS
+    ====================================== -->
+
+    <div class="filter-toolbar">
+      <div
+        class="filter-chips"
+        aria-label="Service filters"
+      >
+        <label
+          [class.selected]="emergencyOnly"
+        >
+          <input
+            type="checkbox"
+            [(ngModel)]="emergencyOnly"
+            (change)="searchHospitals()"
+          />
+
+          <span
+            class="checkmark"
+            aria-hidden="true"
+          >
+            ✓
+          </span>
+
+          Emergency care
+        </label>
+
+        <label
+          [class.selected]="open24x7Only"
+        >
+          <input
+            type="checkbox"
+            [(ngModel)]="open24x7Only"
+            (change)="searchHospitals()"
+          />
+
+          <span
+            class="checkmark"
+            aria-hidden="true"
+          >
+            ✓
+          </span>
+
+          Open 24×7
+        </label>
+
+        <label
+          [class.selected]="rating4Plus"
+        >
+          <input
+            type="checkbox"
+            [(ngModel)]="rating4Plus"
+            (change)="searchHospitals()"
+          />
+
+          <span
+            class="checkmark"
+            aria-hidden="true"
+          >
+            ✓
+          </span>
+
+          Rating 4.0+
+        </label>
+      </div>
+
+
+      <!-- TOOLBAR ACTIONS -->
+
+      <div class="toolbar-actions">
+        <button
+          class="location-button"
+          type="button"
+          (click)="useMyLocation()"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <circle
+              cx="12"
+              cy="12"
+              r="3"
+            />
+
+            <circle
+              cx="12"
+              cy="12"
+              r="8"
+            />
+
+            <path
+              d="M12 2v3M12 19v3M2 12h3M19 12h3"
+            />
+          </svg>
+
+          Use my location
+        </button>
+
+        <button
+          class="clear-button"
+          type="button"
+          (click)="clearFilters()"
+        >
+          Reset all
+        </button>
+      </div>
+    </div>
+
+
+    <!-- GPS STATUS -->
+
+    @if (locationStatus) {
+      <p
+        class="status-message"
+        role="status"
+      >
+        <span aria-hidden="true">
+        </span>
+
+        {{ locationStatus }}
+      </p>
+    }
+  </section>
+
+
+  <!-- =====================================
+       BACKEND LOADING STATE
+  ====================================== -->
+
+  @if (loading) {
+    <section
+      class="directory-loading"
+      aria-live="polite"
+    >
+      <div
+        class="directory-spinner"
+        aria-hidden="true"
+      >
+      </div>
+
+      <h2>
+        Loading hospitals
+      </h2>
+
+      <p>
+        Hospital information is being
+        retrieved from the CareFinder backend.
+      </p>
+    </section>
+
+  } @else {
+
+    <!-- =====================================
+         RESULTS
+    ====================================== -->
+
+    <section
+      class="results-section"
+      aria-labelledby="results-title"
+    >
+
+      <!-- BACKEND FALLBACK WARNING -->
+
+      @if (loadError) {
+        <div
+          class="api-warning"
+          role="alert"
+        >
+          <div>
+            <strong>
+              Backend connection warning
+            </strong>
+
+            <p>
+              {{ loadError }}
+            </p>
+          </div>
+
+          <button
+            type="button"
+            (click)="retryLoading()"
+          >
+            Retry
+          </button>
+        </div>
+      }
+
+
+      <!-- RESULTS HEADER -->
+
+      <header class="results-header">
+        <div>
+          <span class="eyebrow">
+            Search results
+          </span>
+
+          <h2 id="results-title">
+            {{ filteredHospitals.length }}
+            matching hospitals
+          </h2>
+
+          @if (
+            filteredHospitals.length > 0
+          ) {
+            <p>
+              Showing
+              {{ visibleHospitals.length }}
+              of
+              {{ filteredHospitals.length }}
+              profiles
+            </p>
+          }
+        </div>
+
+        <label class="sort-control">
+          Sort by
+
+          <select
+            [(ngModel)]="sortOption"
+            (change)="searchHospitals()"
+          >
+            <option value="recommended">
+              Recommended
+            </option>
+
+            <option value="distance">
+              Nearest first
+            </option>
+
+            <option value="rating">
+              Highest rated
+            </option>
+
+            <option value="name">
+              Name A–Z
+            </option>
+          </select>
+        </label>
+      </header>
+
+
+      <!-- =====================================
+           HOSPITAL GRID
+      ====================================== -->
+
+      @if (
+        filteredHospitals.length > 0
+      ) {
+        <div class="hospital-grid">
+          @for (
+            hospital of visibleHospitals;
+            track hospital.id
+          ) {
+            <article class="hospital-card">
+
+              <!-- CARD HEADER -->
+
+              <div class="card-head">
+                <div
+                  class="hospital-symbol"
+                  aria-hidden="true"
+                >
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M4 20V8l8-5 8 5v12M9 20v-5h6v5M12 7v5M9.5 9.5h5"
+                    />
+                  </svg>
+                </div>
+
+                <span class="accreditation">
+                  {{ hospital.accreditation }}
+                </span>
+
+
+                <!-- FAVORITE BUTTON -->
+
+                <button
+                  class="favorite"
+                  type="button"
+                  [class.saved]="
+                    isFavorite(hospital.id)
+                  "
+                  [class.loading]="
+                    isFavoriteBusy(hospital.id)
+                  "
+                  [disabled]="
+                    isFavoriteBusy(hospital.id)
+                  "
+                  [attr.aria-pressed]="
+                    isFavorite(hospital.id)
+                  "
+                  [attr.aria-label]="
+                    isFavorite(hospital.id)
+                      ? 'Remove ' +
+                        hospital.name +
+                        ' from saved hospitals'
+                      : 'Save ' +
+                        hospital.name
+                  "
+                  [title]="
+                    isFavorite(hospital.id)
+                      ? 'Remove from saved hospitals'
+                      : 'Save hospital'
+                  "
+                  (click)="
+                    toggleFavorite(hospital.id)
+                  "
+                >
+                  @if (
+                    isFavoriteBusy(hospital.id)
+                  ) {
+                    <span
+                      class="favorite-spinner"
+                      aria-hidden="true"
+                    >
+                    </span>
+
+                  } @else {
+                    <svg
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"
+                      />
+                    </svg>
+                  }
+                </button>
+              </div>
+
+
+              <!-- CARD BODY -->
+
+              <div class="card-body">
+                <p class="location">
+                  <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M12 21s7-5.2 7-12a7 7 0 1 0-14 0c0 6.8 7 12 7 12Z"
+                    />
+
+                    <circle
+                      cx="12"
+                      cy="9"
+                      r="2.4"
+                    />
+                  </svg>
+
+                  {{ hospital.city }},
+                  {{ hospital.state }}
+                </p>
+
+                <h3>
+                  {{ hospital.name }}
+                </h3>
+
+                <p class="hospital-type">
+                  {{ hospital.type }}
+                  ·
+                  {{ hospital.beds }}
+                  beds
+                </p>
+
+
+                <!-- RATING -->
+
+                <div class="rating-row">
+                  <strong>
+                    <span aria-hidden="true">
+                      ★
+                    </span>
+
+                    {{ hospital.rating }}
+                  </strong>
+
+                  <span>
+                    {{ hospital.reviews }}
+                    reviews
+                  </span>
+
+                  <i></i>
+
+                  <span>
+                    {{ hospital.specialties[0] }}
+                  </span>
+                </div>
+
+
+                <!-- SERVICES -->
+
+                <div class="service-tags">
+                  @if (hospital.emergency) {
+                    <span class="emergency">
+                      <i aria-hidden="true">
+                      </i>
+
+                      Emergency
+                    </span>
+                  }
+
+                  @if (hospital.open24x7) {
+                    <span>
+                      <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <circle
+                          cx="12"
+                          cy="12"
+                          r="9"
+                        />
+
+                        <path
+                          d="M12 7v5l3 2"
+                        />
+                      </svg>
+
+                      24×7
+                    </span>
+                  }
+
+                  <span>
+                    <svg
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="m5 12 4 4L19 6"
+                      />
+                    </svg>
+
+                    Insurance listed
+                  </span>
+                </div>
+
+
+                <!-- INSURANCE -->
+
+                <div class="insurance-panel">
+                  <span>
+                    Listed insurers
+                  </span>
+
+                  <p>
+                    @for (
+                      provider of
+                        hospital.insurance.slice(
+                          0,
+                          3
+                        );
+                      track provider
+                    ) {
+                      <b>
+                        {{ provider }}
+                      </b>
+                    }
+
+                    @if (
+                      hospital.insurance.length > 3
+                    ) {
+                      <b>
+                        +{{
+                          hospital.insurance.length -
+                            3
+                        }}
+                      </b>
+                    }
+                  </p>
+                </div>
+
+
+                <!-- COMPARE BUTTON -->
+
+                <button
+                  type="button"
+                  class="compare-select-button"
+                  [class.selected]="
+                    comparisonService.isSelected(
+                      hospital.id
+                    )
+                  "
+                  (click)="
+                    toggleComparison(
+                      hospital.id
+                    )
+                  "
+                  [attr.aria-label]="
+                    comparisonService.isSelected(
+                      hospital.id
+                    )
+                      ? 'Remove ' +
+                        hospital.name +
+                        ' from comparison'
+                      : 'Add ' +
+                        hospital.name +
+                        ' to comparison'
+                  "
+                >
+                  <span class="compare-check">
+                    {{
+                      comparisonService.isSelected(
+                        hospital.id
+                      )
+                        ? '✓'
+                        : '+'
+                    }}
+                  </span>
+
+                  {{
+                    comparisonService.isSelected(
+                      hospital.id
+                    )
+                      ? 'Selected for comparison'
+                      : 'Add to comparison'
+                  }}
+                </button>
+              </div>
+
+
+              <!-- CARD FOOTER -->
+
+              <footer class="card-footer">
+                <span>
+                  @if (
+                    hospitalDistances[
+                      hospital.id
+                    ] !== undefined
+                  ) {
+                    <strong>
+                      {{
+                        hospitalDistances[
+                          hospital.id
+                        ]
+                      }}
+                      km
+                    </strong>
+
+                    from you
+
+                  } @else {
+                    {{ hospital.city }}
+                    location
+                  }
+                </span>
+
+                <a
+                  [routerLink]="[
+                    '/hospital-details',
+                    hospital.id
+                  ]"
+                >
+                  View profile
+
+                  <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="m9 18 6-6-6-6"
+                    />
+                  </svg>
+                </a>
+              </footer>
+            </article>
+          }
+        </div>
+
+
+        <!-- LOAD MORE -->
+
+        @if (hasMoreHospitals) {
+          <div class="load-more">
+            <button
+              type="button"
+              (click)="loadMore()"
+            >
+              Load 12 more hospitals
+            </button>
+
+            <span>
+              {{
+                filteredHospitals.length -
+                  visibleHospitals.length
+              }}
+              profiles remaining
+            </span>
+          </div>
+        }
+
+      } @else {
+
+        <!-- =====================================
+             NO RESULTS
+        ====================================== -->
+
+        <div class="no-results">
+          <div aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <circle
+                cx="11"
+                cy="11"
+                r="7"
+              />
+
+              <path
+                d="m20 20-4-4M8.5 11h5"
+              />
+            </svg>
+          </div>
+
+          <h3>
+            No hospitals match these filters
+          </h3>
+
+          <p>
+            Try a broader location, another
+            insurer or reset the service filters.
+          </p>
+
+          <button
+            type="button"
+            (click)="clearFilters()"
+          >
+            Reset filters
+          </button>
+        </div>
+      }
+
+
+      <!-- DISCLAIMER -->
+
+      <p class="data-disclaimer">
+        <strong>
+          Important:
+        </strong>
+
+        This educational project uses curated
+        demonstration listings. Insurance
+        participation, ratings and service
+        availability must be confirmed directly
+        before treatment.
+      </p>
+    </section>
+  }
+
+
+  <!-- =====================================
+       COMPARE NOTIFICATION
+  ====================================== -->
+
+  @if (compareMessage) {
+    <div
+      class="compare-notification"
+      role="status"
+    >
+      <span aria-hidden="true">
+        ✓
+      </span>
+
+      {{ compareMessage }}
+    </div>
+  }
+
+
+  <!-- =====================================
+       FLOATING COMPARE BAR
+  ====================================== -->
+
+  @if (
+    comparisonService.count() > 0
+  ) {
+    <aside
+      class="compare-floating-bar"
+      aria-label="Hospital comparison"
+    >
+      <div class="compare-bar-info">
+        <span class="compare-bar-icon">
+          ⚖
+        </span>
+
+        <div>
+          <strong>
+            {{
+              comparisonService.count()
+            }}/3
+          </strong>
+
+          <span>
+            hospitals selected
+          </span>
+        </div>
+      </div>
+
+      <div class="compare-bar-actions">
+        <button
+          type="button"
+          (click)="
+            comparisonService
+              .clearComparison()
+          "
+        >
+          Clear
+        </button>
+
+        <a routerLink="/compare">
+          Compare Now
+
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              d="m9 18 6-6-6-6"
+            />
+          </svg>
+        </a>
+      </div>
+    </aside>
+  }
+
+</main>

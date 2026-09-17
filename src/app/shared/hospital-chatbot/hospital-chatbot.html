@@ -1,0 +1,319 @@
+@if (!chatOpen()) {
+  <button
+    type="button"
+    class="chatbot-launcher"
+    (click)="toggleChat()"
+    aria-label="Open chatbot"
+  >
+    <span class="launcher-icon">
+      💬
+    </span>
+
+    <span class="launcher-text">
+      Ask CareFinder
+    </span>
+  </button>
+}
+
+
+@if (chatOpen()) {
+  <section class="chatbot-window">
+    <header class="chatbot-header">
+      <div class="assistant-details">
+        <div class="assistant-avatar">
+          🏥
+        </div>
+
+        <div>
+          <h3>
+            {{ labels().title }}
+          </h3>
+
+          <p>
+            <span class="online-dot"></span>
+
+            {{ labels().subtitle }}
+          </p>
+        </div>
+      </div>
+
+
+      <div class="header-actions">
+        <div class="language-switch">
+          <button
+            type="button"
+            [class.active]="
+              language() === 'en'
+            "
+            (click)="setLanguage('en')"
+          >
+            EN
+          </button>
+
+          <button
+            type="button"
+            [class.active]="
+              language() === 'hi'
+            "
+            (click)="setLanguage('hi')"
+          >
+            हिं
+          </button>
+        </div>
+
+
+        <button
+          type="button"
+          class="header-button"
+          (click)="clearChat()"
+          [title]="labels().clear"
+          [attr.aria-label]="
+            labels().clear
+          "
+        >
+          ↻
+        </button>
+
+
+        <button
+          type="button"
+          class="header-button"
+          (click)="closeChat()"
+          [title]="labels().close"
+          [attr.aria-label]="
+            labels().close
+          "
+        >
+          ✕
+        </button>
+      </div>
+    </header>
+
+
+    <div
+      #messagesContainer
+      class="messages-container"
+    >
+      @for (
+        message of messages();
+        track message.id
+      ) {
+        <div
+          class="message-row"
+          [class.user-row]="
+            message.sender === 'user'
+          "
+          [class.bot-row]="
+            message.sender === 'bot'
+          "
+        >
+          @if (
+            message.sender === 'bot'
+          ) {
+            <div class="message-avatar">
+              🏥
+            </div>
+          }
+
+
+          <div
+            class="message-bubble"
+            [class.user-bubble]="
+              message.sender === 'user'
+            "
+            [class.bot-bubble]="
+              message.sender === 'bot'
+            "
+          >
+            <div class="message-text">
+              {{ message.text }}
+            </div>
+
+
+            @if (
+              message.sourceUrl
+            ) {
+              <a
+                class="source-link"
+                [href]="message.sourceUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                🌐 {{ labels().source }} ↗
+              </a>
+            }
+
+
+            @if (
+              message.hospitalLinks;
+              as hospitalLinks
+            ) {
+              <div class="hospital-profile-links">
+                @for (
+                  hospitalLink of hospitalLinks;
+                  track hospitalLink.id
+                ) {
+                  <a
+                    class="hospital-profile-link"
+                    [routerLink]="[
+                      '/hospital-details',
+                      hospitalLink.id
+                    ]"
+                    (click)="closeChat()"
+                  >
+                    <span class="profile-hospital-icon">
+                      +
+                    </span>
+
+                    <span class="profile-hospital-details">
+                      <small>
+                        {{
+                          language() === 'hi'
+                            ? 'अस्पताल प्रोफाइल'
+                            : 'Hospital profile'
+                        }}
+                      </small>
+
+                      <strong>
+                        {{ hospitalLink.name }}
+                      </strong>
+                    </span>
+
+                    <b aria-hidden="true">
+                      →
+                    </b>
+                  </a>
+                }
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+
+      @if (loading()) {
+        <div class="message-row bot-row">
+          <div class="message-avatar">
+            🏥
+          </div>
+
+          <div class="message-bubble bot-bubble typing">
+            <span></span>
+
+            <span></span>
+
+            <span></span>
+          </div>
+        </div>
+      }
+    </div>
+
+
+    <div class="quick-section">
+      <p>
+        {{ labels().quickTitle }}
+      </p>
+
+      <div class="quick-buttons">
+        @for (
+          quickQuestion of quickQuestions();
+          track quickQuestion
+        ) {
+          <button
+            type="button"
+            (click)="
+              askQuickQuestion(
+                quickQuestion
+              )
+            "
+            [disabled]="loading()"
+          >
+            {{ quickQuestion }}
+          </button>
+        }
+      </div>
+    </div>
+
+
+    @if (listening()) {
+      <div class="listening-status">
+        <span class="listening-dot"></span>
+
+        {{ labels().listening }}
+      </div>
+    }
+
+
+    <form
+      class="chatbot-input"
+      (ngSubmit)="sendMessage()"
+    >
+      <button
+        type="button"
+        class="voice-button"
+        [class.listening]="
+          listening()
+        "
+        (click)="toggleVoiceInput()"
+        [title]="labels().microphone"
+        [attr.aria-label]="
+          labels().microphone
+        "
+      >
+        <svg
+          class="microphone-icon"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <rect
+            x="9"
+            y="3"
+            width="6"
+            height="11"
+            rx="3"
+          ></rect>
+
+          <path
+            d="M5.5 11a6.5 6.5 0 0 0 13 0"
+          ></path>
+
+          <path
+            d="M12 17.5V21"
+          ></path>
+
+          <path
+            d="M8.5 21h7"
+          ></path>
+        </svg>
+      </button>
+
+
+      <input
+        type="text"
+        name="question"
+        [(ngModel)]="question"
+        [placeholder]="
+          labels().placeholder
+        "
+        [disabled]="loading()"
+        autocomplete="off"
+      />
+
+
+      <button
+        type="submit"
+        class="send-button"
+        [disabled]="
+          !question.trim() ||
+          loading()
+        "
+        [title]="labels().send"
+        [attr.aria-label]="
+          labels().send
+        "
+      >
+        ➤
+      </button>
+    </form>
+  </section>
+}

@@ -1,0 +1,59 @@
+<main class="auth-page">
+  <section class="auth-shell" aria-labelledby="register-title">
+    <div class="auth-story">
+      <a class="auth-brand" routerLink="/" aria-label="CareFinder home"><span class="brand-mark" aria-hidden="true">+</span><span><strong>Care</strong>Finder</span></a>
+      <p class="eyebrow">JOIN CAREFINDER</p>
+      <h1>Better hospital choices <span>start here.</span></h1>
+      <p class="story-copy">Create one account to search hospitals, compare insurance coverage and keep your healthcare journey organized.</p>
+      <div class="benefit-list" aria-label="Account benefits">
+        <div><span aria-hidden="true">⌖</span><p><strong>Location-based search</strong><small>Find relevant hospitals near you.</small></p></div>
+        <div><span aria-hidden="true">◇</span><p><strong>Insurance filters</strong><small>Match hospitals with your provider.</small></p></div>
+        <div><span aria-hidden="true">♡</span><p><strong>Personal experience</strong><small>Save time on your next search.</small></p></div>
+      </div>
+    </div>
+
+    <div class="auth-card auth-card-wide">
+      <div class="auth-card-header">
+        <span class="mobile-mark" aria-hidden="true">+</span><p class="eyebrow">GET STARTED</p>
+        <h2 id="register-title">Create your account</h2><p>It only takes a minute.</p>
+      </div>
+      <form [formGroup]="registerForm" (ngSubmit)="submit()" novalidate>
+        <div class="field">
+          <label for="register-name">Full name</label>
+          <div class="input-wrap"><span aria-hidden="true">●</span><input id="register-name" type="text" formControlName="name" autocomplete="name" placeholder="Enter your full name" /></div>
+          @if (registerForm.controls.name.touched && registerForm.controls.name.invalid) { <small class="field-error">Enter at least 2 characters.</small> }
+        </div>
+        <div class="field-grid">
+          <div class="field">
+            <label for="register-email">Email address</label>
+            <div class="input-wrap"><span aria-hidden="true">✉</span><input id="register-email" type="email" formControlName="email" autocomplete="email" placeholder="name@example.com" /></div>
+            @if (registerForm.controls.email.touched && registerForm.controls.email.invalid) { <small class="field-error">Enter a valid email address.</small> }
+          </div>
+          <div class="field">
+            <label for="register-mobile">Mobile number</label>
+            <div class="input-wrap"><span aria-hidden="true">☎</span><input id="register-mobile" type="tel" inputmode="numeric" formControlName="mobile" autocomplete="tel" placeholder="10-digit number" /></div>
+            @if (registerForm.controls.mobile.touched && registerForm.controls.mobile.invalid) { <small class="field-error">Enter a valid Indian mobile number.</small> }
+          </div>
+        </div>
+        <div class="field-grid">
+          <div class="field">
+            <label for="register-password">Password</label>
+            <div class="input-wrap"><span aria-hidden="true">●</span><input id="register-password" [type]="showPassword() ? 'text' : 'password'" formControlName="password" autocomplete="new-password" placeholder="Minimum 8 characters" /></div>
+            @if (registerForm.controls.password.touched && registerForm.controls.password.invalid) { <small class="field-error">Use 8+ characters with a letter and number.</small> }
+          </div>
+          <div class="field">
+            <label for="register-confirm">Confirm password</label>
+            <div class="input-wrap"><span aria-hidden="true">✓</span><input id="register-confirm" [type]="showPassword() ? 'text' : 'password'" formControlName="confirmPassword" autocomplete="new-password" placeholder="Repeat your password" /></div>
+            @if (registerForm.controls.confirmPassword.touched && registerForm.hasError('passwordMismatch')) { <small class="field-error">Passwords do not match.</small> }
+          </div>
+        </div>
+        <button class="text-toggle" type="button" (click)="showPassword.set(!showPassword())">{{ showPassword() ? 'Hide passwords' : 'Show passwords' }}</button>
+        <label class="check-row"><input type="checkbox" formControlName="terms" /><span>I agree to the Terms of Service and Privacy Policy.</span></label>
+        @if (registerForm.controls.terms.touched && registerForm.controls.terms.invalid) { <small class="field-error terms-error">Please accept the terms to continue.</small> }
+        @if (message()) { <div class="form-message" [class.success]="messageType() === 'success'" role="status">{{ message() }}</div> }
+        <button class="primary-button" type="submit">Create account <span aria-hidden="true">→</span></button>
+      </form>
+      <p class="auth-switch">Already registered? <a routerLink="/login">Sign in</a></p>
+    </div>
+  </section>
+</main>

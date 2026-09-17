@@ -1,0 +1,338 @@
+<main class="compare-page">
+  <section class="compare-hero">
+    <div>
+      <span class="page-badge">
+        Smart comparison
+      </span>
+
+      <h1>Compare Hospitals</h1>
+
+      <p>
+        Compare rating, facilities, insurance,
+        emergency services and specialties before
+        selecting a hospital.
+      </p>
+    </div>
+
+    @if (hospitals().length > 0) {
+      <button
+        type="button"
+        class="clear-button"
+        (click)="clearAll()"
+      >
+        Clear comparison
+      </button>
+    }
+  </section>
+
+  @if (hospitals().length === 0) {
+    <section class="empty-state">
+      <div class="empty-icon">⚖️</div>
+
+      <h2>No hospitals selected</h2>
+
+      <p>
+        Select two or three hospitals from the
+        hospital listing page to compare them.
+      </p>
+
+      <a
+        routerLink="/hospitals"
+        class="primary-button"
+      >
+        Browse hospitals
+      </a>
+    </section>
+  } @else {
+    @if (hospitals().length === 1) {
+      <div class="selection-message">
+        Select at least one more hospital for a
+        useful comparison.
+      </div>
+    }
+
+    <section class="selected-summary">
+      <div>
+        <strong>{{ hospitals().length }}</strong>
+        of 3 hospitals selected
+      </div>
+
+      <a routerLink="/hospitals">
+        + Add another hospital
+      </a>
+    </section>
+
+    <section class="comparison-wrapper">
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th class="feature-column">
+              Features
+            </th>
+
+            @for (
+              hospital of hospitals();
+              track hospital.id
+            ) {
+              <th class="hospital-heading">
+                <button
+                  type="button"
+                  class="remove-button"
+                  (click)="removeHospital(hospital.id)"
+                  title="Remove hospital"
+                >
+                  ✕
+                </button>
+
+                <div class="hospital-icon">
+                  🏥
+                </div>
+
+                <h2>{{ hospital.name }}</h2>
+
+                <p>
+                  {{ hospital.city }},
+                  {{ hospital.state }}
+                </p>
+
+                <a
+                  [routerLink]="[
+                    '/hospital-details',
+                    hospital.id
+                  ]"
+                  class="details-button"
+                >
+                  View Details
+                </a>
+              </th>
+            }
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <th>Rating</th>
+
+            @for (
+              hospital of hospitals();
+              track hospital.id
+            ) {
+              <td
+                [class.best-value]="
+                  hospitals().length > 1 &&
+                  hospital.rating === bestRating()
+                "
+              >
+                <span class="rating">
+                  ★ {{ hospital.rating }}
+                </span>
+
+                <small>
+                  {{ hospital.reviews }} reviews
+                </small>
+
+                @if (
+                  hospitals().length > 1 &&
+                  hospital.rating === bestRating()
+                ) {
+                  <span class="best-badge">
+                    Best rating
+                  </span>
+                }
+              </td>
+            }
+          </tr>
+
+          <tr>
+            <th>Location</th>
+
+            @for (
+              hospital of hospitals();
+              track hospital.id
+            ) {
+              <td>
+                {{ hospital.city }},
+                {{ hospital.state }}
+              </td>
+            }
+          </tr>
+
+          <tr>
+            <th>Hospital Type</th>
+
+            @for (
+              hospital of hospitals();
+              track hospital.id
+            ) {
+              <td>{{ hospital.type }}</td>
+            }
+          </tr>
+
+          <tr>
+            <th>Available Beds</th>
+
+            @for (
+              hospital of hospitals();
+              track hospital.id
+            ) {
+              <td
+                [class.best-value]="
+                  hospitals().length > 1 &&
+                  hospital.beds === maximumBeds()
+                "
+              >
+                <strong>
+                  {{ hospital.beds }}
+                </strong>
+
+                @if (
+                  hospitals().length > 1 &&
+                  hospital.beds === maximumBeds()
+                ) {
+                  <span class="best-badge">
+                    Maximum
+                  </span>
+                }
+              </td>
+            }
+          </tr>
+
+          <tr>
+            <th>Emergency Service</th>
+
+            @for (
+              hospital of hospitals();
+              track hospital.id
+            ) {
+              <td>
+                <span
+                  class="status"
+                  [class.available]="hospital.emergency"
+                  [class.unavailable]="!hospital.emergency"
+                >
+                  {{
+                    hospital.emergency
+                      ? '✓ Available'
+                      : '✕ Not available'
+                  }}
+                </span>
+              </td>
+            }
+          </tr>
+
+          <tr>
+            <th>Open 24×7</th>
+
+            @for (
+              hospital of hospitals();
+              track hospital.id
+            ) {
+              <td>
+                <span
+                  class="status"
+                  [class.available]="hospital.open24x7"
+                  [class.unavailable]="!hospital.open24x7"
+                >
+                  {{
+                    hospital.open24x7
+                      ? '✓ Yes'
+                      : '✕ No'
+                  }}
+                </span>
+              </td>
+            }
+          </tr>
+
+          <tr>
+            <th>Accreditation</th>
+
+            @for (
+              hospital of hospitals();
+              track hospital.id
+            ) {
+              <td>
+                <span class="accreditation">
+                  {{ hospital.accreditation }}
+                </span>
+              </td>
+            }
+          </tr>
+
+          <tr>
+            <th>Specialties</th>
+
+            @for (
+              hospital of hospitals();
+              track hospital.id
+            ) {
+              <td>
+                <div class="tag-list">
+                  @for (
+                    specialty of hospital.specialties;
+                    track specialty
+                  ) {
+                    <span>{{ specialty }}</span>
+                  }
+                </div>
+              </td>
+            }
+          </tr>
+
+          <tr>
+            <th>Supported Insurance</th>
+
+            @for (
+              hospital of hospitals();
+              track hospital.id
+            ) {
+              <td>
+                <div class="tag-list insurance-list">
+                  @for (
+                    insurance of hospital.insurance;
+                    track insurance
+                  ) {
+                    <span
+                      [class.common-insurance]="
+                        commonInsurance().includes(
+                          insurance
+                        )
+                      "
+                    >
+                      {{ insurance }}
+                    </span>
+                  }
+                </div>
+              </td>
+            }
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    @if (
+      hospitals().length > 1 &&
+      commonInsurance().length > 0
+    ) {
+      <section class="common-insurance-card">
+        <div class="common-icon">🛡️</div>
+
+        <div>
+          <h3>Common Insurance Providers</h3>
+
+          <p>
+            All selected hospitals support:
+          </p>
+
+          <div class="common-provider-list">
+            @for (
+              insurance of commonInsurance();
+              track insurance
+            ) {
+              <span>{{ insurance }}</span>
+            }
+          </div>
+        </div>
+      </section>
+    }
+  }
+</main>
