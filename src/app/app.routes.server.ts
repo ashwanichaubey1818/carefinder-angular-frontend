@@ -1,16 +1,19 @@
-import { RenderMode, ServerRoute } from '@angular/ssr';
+import {
+  RenderMode,
+  ServerRoute
+} from '@angular/ssr';
 
 export const serverRoutes: ServerRoute[] = [
   {
-    path: 'hospital-details/:id',
-    renderMode: RenderMode.Server
+    path: 'about',
+    renderMode: RenderMode.Prerender
   },
   {
-    path: 'profile',
-    renderMode: RenderMode.Client
+    path: 'how-it-works',
+    renderMode: RenderMode.Prerender
   },
   {
     path: '**',
-    renderMode: RenderMode.Prerender
+    renderMode: RenderMode.Client
   }
 ];
