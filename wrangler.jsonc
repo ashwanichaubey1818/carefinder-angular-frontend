@@ -1,0 +1,9 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "carefinder-angular-frontend",
+  "compatibility_date": "2026-09-26",
+  "assets": {
+    "directory": "./dist/health-insurance-locator/browser",
+    "not_found_handling": "single-page-application"
+  }
+}
