@@ -189,3 +189,4 @@ Always confirm current treatment availability, insurance coverage and cashless e
 ## Author
 
 Ashwani Kumar
+[![Frontend CI](https://github.com/ashwanichaubey1818/carefinder-angular-frontend/actions/workflows/frontend-ci.yml/badge.svg)](https://github.com/ashwanichaubey1818/carefinder-angular-frontend/actions/workflows/frontend-ci.yml)
