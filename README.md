@@ -4,6 +4,18 @@ CareFinder is a full-stack healthcare directory application that helps users dis
 
 This repository contains the Angular frontend. It connects to the CareFinder Spring Boot REST API.
 
+## Live deployment
+
+- Frontend: https://carefinder-angular-frontend.ashwanichaubey1818.workers.dev
+- Backend API: https://carefinder-springboot-backend.onrender.com
+- API health: https://carefinder-springboot-backend.onrender.com/actuator/health
+- Swagger UI: https://carefinder-springboot-backend.onrender.com/swagger-ui.html
+- Cloud database: TiDB Cloud (MySQL compatible)
+
+The live application uses an Angular frontend, Spring Boot REST API,
+TiDB Cloud database, JWT authentication and Brevo transactional email
+for secure password-reset delivery.
+
 ## Key Features
 
 - Nationwide directory with 100 demonstration hospital profiles
