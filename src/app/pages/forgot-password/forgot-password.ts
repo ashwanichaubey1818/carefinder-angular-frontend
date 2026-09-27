@@ -13,6 +13,7 @@ import {
 } from '@angular/forms';
 
 import {
+  ActivatedRoute,
   Router,
   RouterLink
 } from '@angular/router';
@@ -20,6 +21,7 @@ import {
 import {
   AuthService
 } from '../../services/auth.service';
+
 
 function matchingPasswords(
   control: AbstractControl
@@ -39,6 +41,7 @@ function matchingPasswords(
       };
 }
 
+
 @Component({
   selector: 'app-forgot-password',
 
@@ -54,6 +57,7 @@ function matchingPasswords(
     '../../styles/auth.css'
 })
 export class ForgotPassword {
+
   private readonly formBuilder =
     inject(FormBuilder);
 
@@ -63,6 +67,10 @@ export class ForgotPassword {
   private readonly router =
     inject(Router);
 
+  private readonly route =
+    inject(ActivatedRoute);
+
+
   readonly step =
     signal<
       'email' |
@@ -70,8 +78,10 @@ export class ForgotPassword {
       'done'
     >('email');
 
+
   readonly message =
     signal('');
+
 
   readonly messageType =
     signal<
@@ -80,14 +90,18 @@ export class ForgotPassword {
       ''
     >('');
 
+
   readonly showPassword =
     signal(false);
+
 
   readonly submitting =
     signal(false);
 
+
   private readonly resetToken =
     signal('');
+
 
   readonly emailForm =
     this.formBuilder
@@ -101,6 +115,7 @@ export class ForgotPassword {
           ]
         ]
       });
+
 
   readonly resetForm =
     this.formBuilder
@@ -133,6 +148,27 @@ export class ForgotPassword {
             matchingPasswords
         }
       );
+
+
+  constructor() {
+    const token =
+      this.route
+        .snapshot
+        .queryParamMap
+        .get('token')
+        ?.trim() ?? '';
+
+    if (token) {
+      this.resetToken.set(token);
+
+      this.step.set('reset');
+
+      this.message.set('');
+
+      this.messageType.set('');
+    }
+  }
+
 
   verifyEmail(): void {
     if (this.emailForm.invalid) {
@@ -176,26 +212,36 @@ export class ForgotPassword {
           return;
         }
 
-        if (!result.resetToken) {
-          this.showMessage(
-            'Reset instructions were created, but no development token was returned.',
-            'error'
+        /*
+         * Local development can still return
+         * a development reset token.
+         */
+        if (result.resetToken) {
+          this.resetToken.set(
+            result.resetToken
           );
+
+          this.message.set('');
+
+          this.messageType.set('');
+
+          this.step.set('reset');
 
           return;
         }
 
-        this.resetToken.set(
-          result.resetToken
+        /*
+         * Production sends the reset token
+         * through email instead of returning
+         * it to the browser.
+         */
+        this.showMessage(
+          'Password reset link has been sent. Check your email inbox and spam folder.',
+          'success'
         );
-
-        this.message.set('');
-
-        this.messageType.set('');
-
-        this.step.set('reset');
       });
   }
+
 
   resetPassword(): void {
     if (this.resetForm.invalid) {
@@ -214,6 +260,11 @@ export class ForgotPassword {
       this.submitting() ||
       !this.resetToken()
     ) {
+      this.showMessage(
+        'Password reset link is missing or invalid. Request a new reset email.',
+        'error'
+      );
+
       return;
     }
 
@@ -258,6 +309,7 @@ export class ForgotPassword {
         }
       });
   }
+
 
   private showMessage(
     text: string,
